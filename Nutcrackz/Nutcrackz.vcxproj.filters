@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="2D">
+      <UniqueIdentifier>{e9abe78b-238b-4d41-bb88-d08511db28ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3D">
+      <UniqueIdentifier>{6ee065ed-19e4-4465-8dbb-25a63648678d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Common Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="audioengine.cpp">
+      <Filter>Common Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commonerrors.cpp">
+      <Filter>Common Files</Filter>
+    </ClCompile>
+    <ClCompile Include="iomanager.cpp">
+      <Filter>Common Files</Filter>
+    </ClCompile>
+    <ClCompile Include="resourcemanager.cpp">
+      <Filter>Common Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pipeline.cpp">
+      <Filter>Common Files</Filter>
+    </ClCompile>
+    <ClCompile Include="math3d.cpp">
+      <Filter>Common Files</Filter>
+    </ClCompile>
+    <ClCompile Include="util.cpp">
+      <Filter>Common Files</Filter>
+    </ClCompile>
+    <ClCompile Include="glslProgram.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="imageloader.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="camera3d.cpp">
+      <Filter>3D</Filter>
+    </ClCompile>
+    <ClCompile Include="3dpicking.cpp">
+      <Filter>3D</Filter>
+    </ClCompile>
+    <ClCompile Include="atb.cpp">
+      <Filter>3D</Filter>
+    </ClCompile>
+    <ClCompile Include="box.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="spritefont.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="picopng.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="capsule.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="debugrenderer.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="texturecache.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="camera2d.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="viewport2d.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="lightingprogram.cpp">
+      <Filter>3D</Filter>
+    </ClCompile>
+    <ClCompile Include="shaderprogram.cpp">
+      <Filter>3D</Filter>
+    </ClCompile>
+    <ClCompile Include="simplecolor.cpp">
+      <Filter>3D</Filter>
+    </ClCompile>
+    <ClCompile Include="viewport3d.cpp">
+      <Filter>3D</Filter>
+    </ClCompile>
+    <ClCompile Include="nutcrackz.cpp">
+      <Filter>Main Files</Filter>
+    </ClCompile>
+    <ClCompile Include="newitemdlg.cpp">
+      <Filter>Main Files</Filter>
+    </ClCompile>
+    <ClCompile Include="spritebatch.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="inputmanager.cpp">
+      <Filter>Common Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="gltexture.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="glslProgram.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="imageloader.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="camera2d.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="camera3d.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="3dpicking.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="atb.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="box.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="capsule.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="editmode.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="debugrenderer.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="picopng.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="spritefont.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="texturecache.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="viewport2d.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="audioengine.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commonerrors.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iomanager.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="luabinding.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="math3d.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pipeline.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resourcemanager.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tilesheet.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="types.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vector2.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vector3.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="lightingprogram.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="shaderprogram.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="simplecolor.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="viewport3d.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="nutcrackz.h">
+      <Filter>Main Files</Filter>
+    </ClInclude>
+    <ClInclude Include="newitemdlg.h">
+      <Filter>Main Files</Filter>
+    </ClInclude>
+    <ClInclude Include="spritebatch.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="vertex.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="inputmanager.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="time.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

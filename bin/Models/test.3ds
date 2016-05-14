@@ -1,0 +1,44 @@
+GameObjects in scene: 3
+
+[BEGIN OF OBJECT]
+Filepath [0] F:\Dropbox\VS 2015 Projects\Nutcrackz\bin\Models\fence.obj
+Name [0] fence
+PositionX [0] 0.000000
+PositionY [0] 0.000000
+PositionZ [0] 0.000000
+RotationX [0] 0.000000
+RotationY [0] 0.000000
+RotationZ [0] 0.000000
+ScaleX [0] 1.000000
+ScaleY [0] 1.000000
+ScaleZ [0] 1.000000
+[END OF OBJECT]
+
+[BEGIN OF OBJECT]
+Filepath [1] F:\Dropbox\VS 2015 Projects\Nutcrackz\bin\Models\nanosuit.obj
+Name [1] nanosuit
+PositionX [1] 0.000000
+PositionY [1] 0.000000
+PositionZ [1] 0.000000
+RotationX [1] 0.000000
+RotationY [1] 0.000000
+RotationZ [1] 0.000000
+ScaleX [1] 1.000000
+ScaleY [1] 1.000000
+ScaleZ [1] 1.000000
+[END OF OBJECT]
+
+[BEGIN OF OBJECT]
+Filepath [2] F:\Dropbox\VS 2015 Projects\Nutcrackz\bin\Models\sphere.obj
+Name [2] sphere
+PositionX [2] 0.000000
+PositionY [2] 0.000000
+PositionZ [2] 0.000000
+RotationX [2] 0.000000
+RotationY [2] 0.000000
+RotationZ [2] 0.000000
+ScaleX [2] 1.000000
+ScaleY [2] 1.000000
+ScaleZ [2] 1.000000
+[END OF OBJECT]
+
