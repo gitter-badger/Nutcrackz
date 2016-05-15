@@ -67,18 +67,18 @@ Viewport3D::Viewport3D(wxPanel* parent, int* args, long style) :
 	gameObjects[0]->setName("nanosuit");
 	gameObjects[0]->setPosition(glm::vec3(-4.5f, 0.0f, 0.0f));
 	gameObjects[0]->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
-	gameObjects[0]->setScale(glm::vec3(0.2f, 0.2f, 0.2f));*/
+	gameObjects[0]->setScale(glm::vec3(0.2f, 0.2f, 0.2f));
 
-	/*GameObject3D *model = new GameObject3D("Models/nanosuit.obj");
+	GameObject3D *model = new GameObject3D("Models/nanosuit.obj");
 
 	this->gameObjects.push_back(model);
 
 	model->setName("nanosuit");
 	model->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 	model->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
-	model->setScale(glm::vec3(1.0f, 1.0f, 1.0f));*/
+	model->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
 
-	/*gameObjects.push_back(new GameObject3D("Models/fence.obj"));
+	gameObjects.push_back(new GameObject3D("Models/fence.obj"));
 	gameObjects[1]->setName("fence");
 	gameObjects[1]->setPosition(glm::vec3(4.5f, 0.0f, 0.0f));
 	gameObjects[1]->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -86,6 +86,9 @@ Viewport3D::Viewport3D(wxPanel* parent, int* args, long style) :
 
 	skyboxShader.loadShaders("Shaders/3D/skybox.vert", "Shaders/3D/skybox.frag", 6);
 	
+	//normal_mapping
+	//shader.loadShaders("Shaders/3D/normal_mapping.vert", "Shaders/3D/normal_mapping.frag", 0);
+
 	camera.mouseUpdate(glm::vec2(0.0f, 0.0f));
 
 	hasStarted = true;
@@ -299,7 +302,7 @@ void Viewport3D::render(wxPaintEvent& evt)
 	{
 		if (!m_pEffect.Init())
 		{
-			message(*m_output, "Failed to init Directional Light.\n" + m_pEffect.getError());
+			message(*m_output, "Failed to initialize Directional Light.\n" + m_pEffect.getError());
 		}
 
 		if (gameObjects.size() > 0)

@@ -1,8 +1,35 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(368,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  audioengine.cpp
+  box.cpp
+  camera2d.cpp
+  capsule.cpp
+  commonerrors.cpp
+  debugrenderer.cpp
+debugrenderer.cpp(273): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+debugrenderer.cpp(304): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  dystopia.cpp
+  glslProgram.cpp
+  imageloader.cpp
+  imaingame.cpp
+  inputmanager.cpp
+  iomanager.cpp
+  main.cpp
+  particlebatch2d.cpp
+  particleengine2d.cpp
+  picopng.cpp
+  resourcemanager.cpp
+  screenlist.cpp
+  sprite.cpp
+  spritebatch.cpp
+  Compiling...
+  spritefont.cpp
+  texturecache.cpp
+  timing.cpp
+timing.cpp(55): warning C4244: '=': conversion from 'float' to 'Uint32', possible loss of data
+  window.cpp
   Generating code
-  0 of 636 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    12 functions had inline decision re-evaluated but remain unchanged
+f:\dropbox\vs 2015 projects\nutcrackz\player\main.cpp(9): warning C4700: uninitialized local variable 'mainGame' used
+  All 649 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
 Box2D.lib(b2BroadPhase.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2BroadPhase.obj)' or at 'F:\Dropbox\VS 2015 Projects\Nutcrackz\bin\Box2D.pdb'; linking object as if no debug info
 Box2D.lib(b2CollideCircle.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2CollideCircle.obj)' or at 'F:\Dropbox\VS 2015 Projects\Nutcrackz\bin\Box2D.pdb'; linking object as if no debug info

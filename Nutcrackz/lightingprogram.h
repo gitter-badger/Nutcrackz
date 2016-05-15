@@ -36,8 +36,8 @@ private:
 	GLuint m_WVPLocation;
 	GLuint m_samplerLocation;
 	GLuint m_WorldMatrixLocation;
-	//GLuint m_dirLightColorLocation;
-	//GLuint m_dirLightAmbientIntensityLocation;
+	GLuint m_dirLightColorLocation;
+	GLuint m_dirLightAmbientIntensityLocation;
 
 	glm::mat4 m_view;
 	glm::mat4 m_projection;

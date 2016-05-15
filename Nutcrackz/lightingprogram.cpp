@@ -16,7 +16,7 @@ bool LightingProgram::Init()
 		return false;
 	}*/
 
-	if (!loadShaders("Shaders/3D/lighting.vert", "Shaders/3D/lighting.frag", 1))
+	if (!loadShaders("Shaders/3D/diffuse_normal.vert", "Shaders/3D/diffuse_normal.frag", 1))
 	{
 		error = "Failed to load lighting shaders.";
 
@@ -42,8 +42,8 @@ bool LightingProgram::Init()
 	// Get a handle for our "MVP" uniform
 	m_WorldMatrixLocation = getUniformLocation("gWorld");
 	m_samplerLocation = getUniformLocation("texture_diffuse1");
-	//m_dirLightColorLocation = getUniformLocation("gDirectionalLight.Color");
-	//m_dirLightAmbientIntensityLocation = getUniformLocation("gDirectionalLight.AmbientIntensity");
+	m_dirLightColorLocation = getUniformLocation("gDirectionalLight.Color");
+	m_dirLightAmbientIntensityLocation = getUniformLocation("gDirectionalLight.AmbientIntensity");
 	m_dirLightLocation.Color = getUniformLocation("gDirectionalLight.Color");
 	m_dirLightLocation.AmbientIntensity = getUniformLocation("gDirectionalLight.AmbientIntensity");
 	m_dirLightLocation.Direction = getUniformLocation("gDirectionalLight.Direction");

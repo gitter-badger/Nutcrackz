@@ -93,9 +93,6 @@
     <ClCompile Include="shaderprogram.cpp">
       <Filter>3D</Filter>
     </ClCompile>
-    <ClCompile Include="simplecolor.cpp">
-      <Filter>3D</Filter>
-    </ClCompile>
     <ClCompile Include="viewport3d.cpp">
       <Filter>3D</Filter>
     </ClCompile>
@@ -215,9 +212,6 @@
     <ClInclude Include="shaderprogram.h">
       <Filter>3D</Filter>
     </ClInclude>
-    <ClInclude Include="simplecolor.h">
-      <Filter>3D</Filter>
-    </ClInclude>
     <ClInclude Include="viewport3d.h">
       <Filter>3D</Filter>
     </ClInclude>
@@ -245,5 +239,10 @@
     <ClInclude Include="time.h">
       <Filter>Common Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\small.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

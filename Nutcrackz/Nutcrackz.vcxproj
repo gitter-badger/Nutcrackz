@@ -178,7 +178,6 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="resourcemanager.cpp" />
     <ClCompile Include="shaderprogram.cpp" />
-    <ClCompile Include="simplecolor.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="spritebatch.cpp" />
     <ClCompile Include="spritefont.cpp" />
@@ -218,7 +217,6 @@
     <ClInclude Include="resource1.h" />
     <ClInclude Include="resourcemanager.h" />
     <ClInclude Include="shaderprogram.h" />
-    <ClInclude Include="simplecolor.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="spritebatch.h" />
     <ClInclude Include="spritefont.h" />
@@ -232,6 +230,9 @@
     <ClInclude Include="vertex.h" />
     <ClInclude Include="viewport2d.h" />
     <ClInclude Include="viewport3d.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\small.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
