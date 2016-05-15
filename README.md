@@ -23,6 +23,6 @@ Please also note that currently the editors cannot use any kinds of playback mod
 
 Lastly you can also save 3D editor information to a file, and so can you with the built-in Lua editor!
 
-If you're interested in collaborating then please contact me first, which you can do at davidmortensen1 at me.com.
+If you're interested in collaborating then please don't hesitate on contacting me, which you can do at davidmortensen1 at me.com.
 
 Thanks for your interest :)
