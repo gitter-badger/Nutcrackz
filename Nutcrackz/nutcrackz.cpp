@@ -1008,7 +1008,7 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 		else
 		{
 			wxFileDialog SaveDialog(
-				this, _("Choose a file to save"), wxEmptyString, wxEmptyString, _("LUA files (*.lua)|*.lua|2D Scenes (*.2ds) | *.2ds|3D Scenes (*.3ds)|*.3ds"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
+				this, _("Choose a filetype to save to"), wxEmptyString, wxEmptyString, _("LUA Scripts (*.lua)|*.lua|2D Scenes (*.2ds) | *.2ds|3D Scenes (*.3ds)|*.3ds"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
 
 			//int response = SaveDialog.ShowModal();
 			if (SaveDialog.ShowModal() == wxID_OK)
@@ -1026,7 +1026,9 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 					{
 						currControl->SaveFile(SaveDialog.GetPath());
 
-						m_auinotebook1->SetPageText(current_page_index, /*current_label + ' *'*/SaveDialog.GetFilename());
+						m_auinotebook1->SetPageText(current_page_index, SaveDialog.GetFilename());
+
+						hasSavedFile = true;
 					}
 
 					dirPath = SaveDialog.GetDirectory();
@@ -1092,7 +1094,7 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 	else
 	{
 		wxFileDialog SaveDialog(
-			this, _("Choose a file to save"), wxEmptyString, wxEmptyString, _("LUA files (*.lua)|*.lua|2D Scenes (*.2ds) | *.2ds|3D Scenes (*.3ds)|*.3ds"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
+			this, _("Choose a filetype to save to"), wxEmptyString, wxEmptyString, _("LUA files (*.lua)|*.lua|2D Scenes (*.2ds) | *.2ds|3D Scenes (*.3ds)|*.3ds"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
 
 		if (dirPath != "" /*&& m_auinotebook1->GetPageText(current_page_index) != "2D Scene *"*/)
 		{
@@ -1269,7 +1271,7 @@ void MyFrame1::SaveFileAs(wxCommandEvent& WXUNUSED(event))
 	if (current_label.EndsWith(" *"))
 	{
 		wxFileDialog SaveDialog(
-			this, _("Choose a file to save"), wxEmptyString, wxEmptyString, _("LUA files (*.lua)|*.lua|2D Scenes (*.2ds) | *.2ds|3D Scenes (*.3ds)|*.3ds"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
+			this, _("Choose a filetype to save to"), wxEmptyString, wxEmptyString, _("LUA Scripts (*.lua)|*.lua|2D Scenes (*.2ds) | *.2ds|3D Scenes (*.3ds)|*.3ds"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
 
 		if (SaveDialog.ShowModal() == wxID_OK)
 		{
@@ -1286,6 +1288,8 @@ void MyFrame1::SaveFileAs(wxCommandEvent& WXUNUSED(event))
 					}*/
 
 					m_auinotebook1->SetPageText(current_page_index, SaveDialog.GetFilename());
+					
+					hasSavedFile = true;
 				}
 			}
 			else if (SaveDialog.GetPath().EndsWith(".3ds"))
@@ -1537,7 +1541,7 @@ void MyFrame1::Debug(wxCommandEvent &WXUNUSED(event))
 
 	if (current_page != nullptr)
 	{
-		if (!current_label.StartsWith("untitled"))
+		if (!current_label.StartsWith("Lua Script"))
 		{
 			if (current_label.EndsWith(" *"))
 			{
@@ -1548,11 +1552,11 @@ void MyFrame1::Debug(wxCommandEvent &WXUNUSED(event))
 				wxExecute(wxT("debugger/sq.exe " + fullPath));
 
 			}
-			else if (current_label.EndsWith(".nut"))
+			else if (current_label.EndsWith(".lua"))
 			{
 				std::string fullPath = dirPath + "\\" + current_label;
 
-				wxExecute(wxT("debugger/sq.exe " + fullPath));
+				//wxExecute(wxT("debugger/sq.exe " + fullPath));
 			}
 		}
 		else
@@ -1581,21 +1585,26 @@ void MyFrame1::OnChangeSTC(wxStyledTextEvent &event)
 	int current_page_index = m_auinotebook1->GetPageIndex(current_page);
 	wxString current_label = m_auinotebook1->GetPageText(current_page_index);
 
-	/*if (!current_label.EndsWith(" *"))
+	if (!current_label.EndsWith(" *"))
 	{
+		if (hasSavedFile == true)
+		{
+			hasSavedFile = false;
+		}
+
 		m_auinotebook1->SetPageText(current_page_index, current_label + " *");
 
 		if (currControl != nullptr)
 		{
 			currControl->SetCaretLineVisibleAlways(true);
 		}
-	}*/
-	/*if (current_label.EndsWith(" *"))
+	}
+	else if (current_label.EndsWith(" *") && hasSavedFile == true)
 	{
 		wxString newLabel = current_label.Remove(current_label.length() - 2, 2);
 
 		m_auinotebook1->SetPageText(current_page_index, newLabel);
-	}*/
+	}
 }
 
 void MyFrame1::OnChange(wxStyledTextEvent& event)

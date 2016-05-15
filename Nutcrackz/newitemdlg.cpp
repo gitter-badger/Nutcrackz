@@ -98,7 +98,7 @@ void NewItemDlg::OnCancel(wxCommandEvent& event)
 
 void NewItemDlg::OnCreate(wxCommandEvent& event)
 {
-	if (textInfo == "Squirrel Script")
+	if (textInfo == "Lua Script")
 	{
 		is2DSceneSelected = false;
 		is3DSceneSelected = false;

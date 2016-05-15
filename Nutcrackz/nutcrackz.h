@@ -128,6 +128,7 @@ private:
 	std::vector<Viewport3D *> canvas3Ds;
 	bool keys[500];
 	bool hasOpenedFile;
+	bool hasSavedFile;
 
 	int canvas2DCounter = 1;
 	int canvas3DCounter = 1;
