@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Nutcrackz", "Nutcrackz\Nutcrackz.vcxproj", "{894596CB-980E-42B8-9A1F-39777A5B3E86}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Editor", "Editor\Editor.vcxproj", "{894596CB-980E-42B8-9A1F-39777A5B3E86}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Player", "Player\Player.vcxproj", "{1157F490-9D7E-4C18-B290-E1D532CE07A4}"
 EndProject
