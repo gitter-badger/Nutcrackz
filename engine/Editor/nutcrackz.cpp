@@ -1,6 +1,5 @@
 #include "nutcrackz.h"
 #include "newitemdlg.h"
-//#include "rwtobinary.h"
 
 #include <wx/textfile.h>
 #include <wx/wfstream.h>
@@ -11,10 +10,8 @@
 
 #include <stdio.h>
 #include <cmath>
-//#include <fstream>
 #include <cstring>
 #include <shellapi.h>
-//#include <iostream>
 #include <string>
 
 BEGIN_EVENT_TABLE(MyFrame1, wxFrame)
@@ -32,8 +29,6 @@ MyFrame1::MyFrame1(wxWindow* parent, wxWindowID id, const wxString& title, const
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 	m_mgr.SetManagedWindow(this);
 	m_mgr.SetFlags(wxAUI_MGR_DEFAULT);
-
-	//fontDialog = new wxFontDialog(this);
 
 	int args[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0 };
 	
@@ -58,13 +53,7 @@ MyFrame1::MyFrame1(wxWindow* parent, wxWindowID id, const wxString& title, const
 	m_scintilla1->SetIndentationGuides(true);
 	m_scintilla1->SetMarginWidth(1, 0);
 	m_scintilla1->SetMarginWidth(0, 0);
-	/*{
-		wxFont font = wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, "Consolas");
-		m_scintilla1->StyleSetFont(wxSTC_STYLE_DEFAULT, font);
-		//m_scintilla1->SetFont(font);
-		//wxFont font = wxFont(10, 75, 90, 90, false, wxT("Consolas"));
-		//m_scintilla1->StyleSetFont(wxSTC_STYLE_DEFAULT, font);
-	}*/
+
 	m_scintilla1->MarkerDefine(wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS);
 	m_scintilla1->MarkerSetBackground(wxSTC_MARKNUM_FOLDER, wxColour(wxT("BLACK")));
 	m_scintilla1->MarkerSetForeground(wxSTC_MARKNUM_FOLDER, wxColour(wxT("WHITE")));
@@ -107,23 +96,6 @@ MyFrame1::MyFrame1(wxWindow* parent, wxWindowID id, const wxString& title, const
 	m_menuItem2 = new wxMenuItem(m_menu11, wxID_ANY, wxString(wxT("New...")), wxEmptyString, wxITEM_NORMAL);
 	m_menu1->Append(m_menuItem2);
 	
-	/*m_menu11 = new wxMenu();
-	wxMenuItem* m_menu11Item = new wxMenuItem(m_menu1, wxID_ANY, wxT("New..."), wxEmptyString, wxITEM_NORMAL, m_menu11);
-
-	wxMenuItem* m_menuItem2;
-	m_menuItem2 = new wxMenuItem(m_menu11, wxID_ANY, wxString(wxT("2D Scene")), wxEmptyString, wxITEM_NORMAL);
-	m_menu11->Append(m_menuItem2);
-
-	wxMenuItem* m_menuItem3;
-	m_menuItem3 = new wxMenuItem(m_menu11, wxID_ANY, wxString(wxT("3D Scene")), wxEmptyString, wxITEM_NORMAL);
-	m_menu11->Append(m_menuItem3);
-
-	wxMenuItem* m_menuItem4;
-	m_menuItem4 = new wxMenuItem(m_menu11, wxID_ANY, wxString(wxT("Script")), wxEmptyString, wxITEM_NORMAL);
-	m_menu11->Append(m_menuItem4);*/
-
-	//m_menu1->Append(m_menu11Item);
-
 	m_menu1->AppendSeparator();
 
 	wxMenuItem* m_menuItem5;
@@ -247,22 +219,12 @@ MyFrame1::MyFrame1(wxWindow* parent, wxWindowID id, const wxString& title, const
 
 	//Menu Connect Events
 	this->Connect(m_menuItem2->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyFrame1::OnNewDlg));
-	//this->Connect(m_menuItem2->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyFrame1::onCreate2DScene));
-	//this->Connect(m_menuItem3->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyFrame1::onCreate3DSCene));
-	//this->Connect(m_menuItem4->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyFrame1::onCreateScript));
 	this->Connect(m_menuItem5->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyFrame1::OpenFile));
 	this->Connect(m_menuItem6->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyFrame1::SaveFile));
 	this->Connect(m_menuItem7->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyFrame1::SaveFileAs));
 	this->Connect(m_menuItem21->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyFrame1::Import));
 	this->Connect(m_menuItem8->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyFrame1::Exit));
 	this->Connect(m_menuItem151->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyFrame1::AudioPlayer));
-
-	//Toolbar Connect Events
-	//this->Connect(m_tool1->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(MyFrame1::OnNewDlg));
-
-	//this->Bind(wxEVT_KEY_DOWN, (&MyFrame1::OnKeyDown), this);
-
-	//playerDlg = new AudioPlayerDlg(NULL, wxID_ANY);
 }
 
 MyFrame1::~MyFrame1()
@@ -337,18 +299,6 @@ void MyFrame1::OnNewDlg(wxCommandEvent& event)
 			tmpScintilla->SetMarginMask(1, wxSTC_MASK_FOLDERS);
 			tmpScintilla->SetMarginWidth(1, 16);
 			
-			/*m_scintilla1->SetUseTabs(true);
-			m_scintilla1->SetTabWidth(4);
-			m_scintilla1->SetIndent(4);
-			m_scintilla1->SetTabIndents(true);
-			m_scintilla1->SetBackSpaceUnIndents(true);
-			m_scintilla1->SetViewEOL(false);
-			m_scintilla1->SetViewWhiteSpace(false);
-			m_scintilla1->SetMarginWidth(2, 0);
-			m_scintilla1->SetIndentationGuides(true);
-			m_scintilla1->SetMarginWidth(1, 0);
-			m_scintilla1->SetMarginWidth(0, 0);*/
-			
 			tmpScintilla->SetMarginSensitive(1, true);
 			tmpScintilla->SetProperty(wxT("fold"), wxT("1"));
 			tmpScintilla->SetFoldFlags(wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED);
@@ -359,8 +309,6 @@ void MyFrame1::OnNewDlg(wxCommandEvent& event)
 				wxFont font = wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, "Consolas");
 				tmpScintilla->StyleSetFont(wxSTC_STYLE_DEFAULT, font);
 			}
-
-			//tmpScintilla->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(MyFrame1::OnSetFocus), NULL, this);
 
 			tmpScintilla->MarkerDefine(wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS);
 			tmpScintilla->MarkerSetBackground(wxSTC_MARKNUM_FOLDER, wxColour(wxT("BLACK")));
@@ -381,14 +329,8 @@ void MyFrame1::OnNewDlg(wxCommandEvent& event)
 			tmpScintilla->SetSelForeground(true, wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 
 			tmpScintilla->SetCaretForeground(wxColour(0, 0, 0));
-			//tmpScintilla->SetCaretLineVisibleAlways(true);
 
-			//tmpScintilla->SetCaretLineVisibleAlways(true);
-			//currControl = tmpScintilla;
 			tmpScintilla->SetFocus();
-
-			//tmpScintilla->SetCaretForeground(wxColour(255, 0, 0));
-			//tmpScintilla->SetCaretLineVisibleAlways(true);
 
 			tmpBS->Add(tmpScintilla, 1, wxEXPAND | wxALL, 5);
 
@@ -484,9 +426,6 @@ void MyFrame1::OnNewDlg(wxCommandEvent& event)
 
 				dLight = m_propertyGrid1->Insert(lightProp, new wxFloatProperty("Diffuse: ",
 					wxPG_LABEL, canvas3D->getDiffuseIntensity()));
-
-				//if (canvas3D->hasOutput())
-					//m_scintilla1->AppendText("3D viewport just got this output!");
 			}
 			canvas3DCounter++;
 		}
@@ -503,135 +442,6 @@ void MyFrame1::OnPropertyGridChange(wxPropertyGridEvent& event)
 		(*iter)->setDiffuseIntensity(getDiffuseLight());
 	}
 }
-
-/*void MyFrame1::onCreate2DScene(wxCommandEvent& event)
-{
-	int args[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0 };
-
-	wxPanel *tmpPanel;
-
-	tmpPanel = new wxPanel(m_auinotebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-
-	wxBoxSizer *tmpBS;
-
-	tmpBS = new wxBoxSizer(wxVERTICAL);
-
-	canvas2D = new Viewport2D((wxPanel*)tmpPanel, args);
-	tmpBS->Add(canvas2D, 1, wxBOTTOM | wxEXPAND | wxRIGHT | wxTOP, 5);
-
-	tmpPanel->SetSizer(tmpBS);
-	tmpPanel->Layout();
-	tmpBS->Fit(tmpPanel);
-	m_auinotebook1->AddPage(tmpPanel, wxT("2D scene"), false, wxNullBitmap);
-}
-
-void MyFrame1::onCreate3DSCene(wxCommandEvent& event)
-{
-	int args[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0 };
-
-	wxPanel *tmpPanel;
-
-	tmpPanel = new wxPanel(m_auinotebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-	
-	wxBoxSizer *tmpBS;
-
-	tmpBS = new wxBoxSizer(wxVERTICAL);
-
-	canvas3D = new Viewport3D((wxPanel*)tmpPanel, args);
-	tmpBS->Add(canvas3D, 1, wxBOTTOM | wxEXPAND | wxRIGHT | wxTOP, 5);
-
-	tmpPanel->SetSizer(tmpBS);
-	tmpPanel->Layout();
-	tmpBS->Fit(tmpPanel);
-
-	m_auinotebook1->AddPage(tmpPanel, wxT("3D scene"), false, wxNullBitmap);
-}
-
-void MyFrame1::onCreateScript(wxCommandEvent& event)
-{
-	wxPanel *tmpPanel;
-
-	tmpPanel = new wxPanel(m_auinotebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-
-	wxBoxSizer *tmpBS;
-
-	tmpBS = new wxBoxSizer(wxHORIZONTAL);
-
-	wxStyledTextCtrl *tmpScintilla;
-	
-	tmpScintilla = new wxStyledTextCtrl(tmpPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, wxEmptyString);
-	
-	// Set the lexer to the C++ lexer
-	tmpScintilla->SetLexer(wxSTC_LEX_CPP);
-
-	// Set the color to use for various elements
-	tmpScintilla->StyleSetForeground(wxSTC_C_COMMENTLINE, wxColor(60, 162, 2));
-	tmpScintilla->StyleSetForeground(wxSTC_C_COMMENT, wxColor(60, 162, 2));
-	tmpScintilla->StyleSetForeground(wxSTC_C_PREPROCESSOR, wxColor(100, 100, 100));
-	tmpScintilla->StyleSetForeground(wxSTC_C_STRING, wxColor(200, 60, 10));
-	tmpScintilla->StyleSetForeground(wxSTC_C_WORD, wxColor(0, 0, 255));
-
-	// Give a list of keywords. They will be given the style specified for
-	// wxSTC_C_WORD items.
-	tmpScintilla->SetKeyWords(0, wxT("return int char"));
-
-	tmpScintilla->Bind(wxEVT_STC_CHANGE, &MyFrame1::OnChangeSTC, this);
-	tmpScintilla->SetUseTabs(true);
-	tmpScintilla->SetTabWidth(4);
-	tmpScintilla->SetIndent(4);
-	tmpScintilla->SetTabIndents(true);
-	tmpScintilla->SetBackSpaceUnIndents(true);
-	tmpScintilla->SetViewEOL(false);
-	tmpScintilla->SetViewWhiteSpace(false);
-	tmpScintilla->SetMarginWidth(2, 0);
-	tmpScintilla->SetIndentationGuides(true);
-	tmpScintilla->SetMarginType(1, wxSTC_MARGIN_SYMBOL);
-	tmpScintilla->SetMarginMask(1, wxSTC_MASK_FOLDERS);
-	tmpScintilla->SetMarginWidth(1, 16);
-	tmpScintilla->SetMarginSensitive(1, true);
-	tmpScintilla->SetProperty(wxT("fold"), wxT("1"));
-	tmpScintilla->SetFoldFlags(wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED);
-	tmpScintilla->SetMarginType(0, wxSTC_MARGIN_NUMBER);
-	tmpScintilla->SetMarginWidth(0, tmpScintilla->TextWidth(wxSTC_STYLE_LINENUMBER, wxT("_99999")));
-
-	{
-		wxFont font = wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, "Consolas");
-		tmpScintilla->StyleSetFont(wxSTC_STYLE_DEFAULT, font);
-	}
-
-	tmpScintilla->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(MyFrame1::OnSetFocus), NULL, this);
-
-	tmpScintilla->MarkerDefine(wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS);
-	tmpScintilla->MarkerSetBackground(wxSTC_MARKNUM_FOLDER, wxColour(wxT("BLACK")));
-	tmpScintilla->MarkerSetForeground(wxSTC_MARKNUM_FOLDER, wxColour(wxT("WHITE")));
-	tmpScintilla->MarkerDefine(wxSTC_MARKNUM_FOLDEROPEN, wxSTC_MARK_BOXMINUS);
-	tmpScintilla->MarkerSetBackground(wxSTC_MARKNUM_FOLDEROPEN, wxColour(wxT("BLACK")));
-	tmpScintilla->MarkerSetForeground(wxSTC_MARKNUM_FOLDEROPEN, wxColour(wxT("WHITE")));
-	tmpScintilla->MarkerDefine(wxSTC_MARKNUM_FOLDERSUB, wxSTC_MARK_EMPTY);
-	tmpScintilla->MarkerDefine(wxSTC_MARKNUM_FOLDEREND, wxSTC_MARK_BOXPLUS);
-	tmpScintilla->MarkerSetBackground(wxSTC_MARKNUM_FOLDEREND, wxColour(wxT("BLACK")));
-	tmpScintilla->MarkerSetForeground(wxSTC_MARKNUM_FOLDEREND, wxColour(wxT("WHITE")));
-	tmpScintilla->MarkerDefine(wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_BOXMINUS);
-	tmpScintilla->MarkerSetBackground(wxSTC_MARKNUM_FOLDEROPENMID, wxColour(wxT("BLACK")));
-	tmpScintilla->MarkerSetForeground(wxSTC_MARKNUM_FOLDEROPENMID, wxColour(wxT("WHITE")));
-	tmpScintilla->MarkerDefine(wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_EMPTY);
-	tmpScintilla->MarkerDefine(wxSTC_MARKNUM_FOLDERTAIL, wxSTC_MARK_EMPTY);
-	tmpScintilla->SetSelBackground(true, wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
-	tmpScintilla->SetSelForeground(true, wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
-	
-	tmpScintilla->SetCaretForeground(wxColour(0, 0, 0));
-	tmpScintilla->SetCaretLineVisibleAlways(true);
-
-	tmpScintilla->SetFocus();
-
-	tmpBS->Add(tmpScintilla, 1, wxEXPAND | wxALL, 5);
-	
-	tmpPanel->SetSizer(tmpBS);
-	tmpPanel->Layout();
-	tmpBS->Fit(tmpPanel);
-
-	m_auinotebook1->AddPage(tmpPanel, wxT("untitled"), true, wxNullBitmap);
-}*/
 
 void MyFrame1::OpenFile(wxCommandEvent& WXUNUSED(event))
 {
@@ -692,9 +502,6 @@ void MyFrame1::OpenFile(wxCommandEvent& WXUNUSED(event))
 				wxFont font = wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, "Consolas");
 				tmpScintilla->StyleSetFont(wxSTC_STYLE_DEFAULT, font);
 			}
-
-			//tmpScintilla->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(MyFrame1::OnSetFocus), NULL, this);
-			//tmpScintilla->SetCaretLineVisibleAlways(true);
 
 			tmpScintilla->MarkerDefine(wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS);
 			tmpScintilla->MarkerSetBackground(wxSTC_MARKNUM_FOLDER, wxColour(wxT("BLACK")));
@@ -777,19 +584,11 @@ void MyFrame1::OpenFile(wxCommandEvent& WXUNUSED(event))
 
 			std::string path = OpenDialog.GetPath();
 
-			//GameObject3D::gameObject goRead;
-
-			/*FILE *fileRead = fopen(path.c_str(), "rb");
-			fread(&go, sizeof(GameObject3D::gameObject), 1, fileRead);
-			fclose(fileRead);*/
-
-			//go = goRead;
-
-			//m_scintilla1->AppendText("File Contains = " + go.m_name);
-
 			GameObject3D::gameObject test;
 
 			fstream file;
+
+			int objCount = 0;
 
 			file.open(path.c_str(), ios::binary | ios::in);
 
@@ -798,20 +597,15 @@ void MyFrame1::OpenFile(wxCommandEvent& WXUNUSED(event))
 				cout << "Could not open file!" << endl;
 			}
 
-			file.seekg(0);
+			file.seekg(0, ios::beg);
 
-			//file.read((char *)numberOfGOS, 4);
-			file.read((char *)&test, sizeof(GameObject3D::gameObject));
+			while (file.good())
+			{
+				file.read((char *)&test, sizeof(GameObject3D::gameObject));
 
-			//wxLogMessage("number of gameObjects: %i", numberOfGOS);
-
-			file.close();
-
-			//for (std::vector<Viewport3D *>::iterator iter = canvas3Ds.begin(); iter != canvas3Ds.end(); ++iter)
-			//{
 				GameObject3D *go3D = new GameObject3D(test.m_filepath);
 				GameObject3D::gameObject *gameObj = new GameObject3D::gameObject();
-				
+
 				gameObj->setPath(test.m_filepath);
 				gameObj->setName(test.m_name);
 				gameObj->setPosition(test.m_positionXYZ);
@@ -826,191 +620,22 @@ void MyFrame1::OpenFile(wxCommandEvent& WXUNUSED(event))
 				gameObjects.push_back(gameObj);
 
 				canvas3D->addGameObject(go3D);
-			//}
-			//wxLogMessage(test.m_filepath/*"File contains = \n %s,\n %f, %f, %f,\n %f, %f, %f,\n %f, %f, %f!", go.m_name, go.m_positionXYZ.x, go.m_positionXYZ.y, go.m_positionXYZ.z, go.m_rotationXYZ.x, go.m_rotationXYZ.y, go.m_rotationXYZ.z, go.m_scaleXYZ.x, go.m_scaleXYZ.y, go.m_scaleXYZ.z*/);
+				objCount++;
+			}
+			file.close();
 
-			/*GameObject3D *go3D = new GameObject3D(go.m_filepath);
+			gameObjects.resize(objCount - 1);
+			canvas3D->resizeGameObjects(objCount - 1);
 
-			go3D->setName(go.m_name);
-			go3D->setPosition(go.m_positionXYZ);
-			go3D->setRotation(go.m_rotationXYZ);
-			go3D->setScale(go.m_scaleXYZ);
+			//ostringstream oss;
+			//oss << gameObjects.size();//canvas3D->getMyGameObjects().size();
 
-			canvas3D->addGameObject(go3D);*/
-
-			//wxLogMessage("File contains = %s!", goRead.m_name);
-
-			/*wxFileInputStream input(OpenDialog.GetPath());
-			wxTextInputStream text(input, wxT("\x09"), wxConvUTF8);
-			while (input.IsOk() && !input.Eof())
-			{
-				wxString line = text.ReadLine();
-				
-				if (line.Contains("GameObjects in scene:"))
-				{
-					std::string myNum = line.Remove(0, 22);
-
-					numGos = ::atoi(myNum.c_str());
-				}
-				//while (i < numGos)
-				for (int i = 0; i < numGos; i++, j++)
-				{
-					if (line.Contains("Filepath [" + std::to_string(i) + "]"))
-					{
-						std::string myFile = line.Remove(0, 13);
-						//std::string myFile = line.AfterLast(']');
-
-						m_file = myFile;
-
-						m_scintilla1->SetReadOnly(false);
-						m_scintilla1->AppendText("read gameObjects successfully! " + m_file + "\n");
-						m_scintilla1->SetReadOnly(true);
-					}
-
-					if (line.Contains("Name [" + std::to_string(i) + "]"))
-					{
-						std::string myName = line.Remove(0, 9);
-
-						m_objName = myName;
-
-						m_scintilla1->SetReadOnly(false);
-						m_scintilla1->AppendText("read gameObjects successfully! " + m_objName + "\n");
-						m_scintilla1->SetReadOnly(true);
-					}
-
-					if (line.Contains("PositionX [" + std::to_string(i) + "]"))
-					{
-						std::string myX = line.Remove(0, 14);
-
-						posX = ::atof(myX.c_str());
-
-						m_scintilla1->SetReadOnly(false);
-						m_scintilla1->AppendText("read gameObjects successfully! " + myX + "\n");
-						m_scintilla1->SetReadOnly(true);
-					}
-
-					if (line.Contains("PositionY [" + std::to_string(i) + "]"))
-					{
-						std::string myY = line.Remove(0, 14);
-
-						posY = ::atof(myY.c_str());
-
-						m_scintilla1->SetReadOnly(false);
-						m_scintilla1->AppendText("read gameObjects successfully! " + myY + "\n");
-						m_scintilla1->SetReadOnly(true);
-					}
-
-					if (line.Contains("PositionZ [" + std::to_string(i) + "]"))
-					{
-						std::string myZ = line.Remove(0, 14);
-
-						posZ = ::atof(myZ.c_str());
-
-						m_scintilla1->SetReadOnly(false);
-						m_scintilla1->AppendText("read gameObjects successfully! " + myZ + "\n");
-						m_scintilla1->SetReadOnly(true);
-					}
-
-					if (line.Contains("RotationX [" + std::to_string(i) + "]"))
-					{
-						std::string myX = line.Remove(0, 14);
-
-						rotX = ::atof(myX.c_str());
-
-						m_scintilla1->SetReadOnly(false);
-						m_scintilla1->AppendText("read gameObjects successfully! " + myX + "\n");
-						m_scintilla1->SetReadOnly(true);
-					}
-
-					if (line.Contains("RotationY [" + std::to_string(i) + "]"))
-					{
-						std::string myY = line.Remove(0, 14);
-
-						rotY = ::atof(myY.c_str());
-
-						m_scintilla1->SetReadOnly(false);
-						m_scintilla1->AppendText("read gameObjects successfully! " + myY + "\n");
-						m_scintilla1->SetReadOnly(true);
-					}
-
-					if (line.Contains("RotationZ [" + std::to_string(i) + "]"))
-					{
-						std::string myZ = line.Remove(0, 14);
-
-						rotZ = ::atof(myZ.c_str());
-
-						m_scintilla1->SetReadOnly(false);
-						m_scintilla1->AppendText("read gameObjects successfully! " + myZ + "\n");
-						m_scintilla1->SetReadOnly(true);
-					}
-
-					if (line.Contains("ScaleX [" + std::to_string(i) + "]"))
-					{
-						std::string myX = line.Remove(0, 11);
-
-						sclX = ::atof(myX.c_str());
-
-						m_scintilla1->SetReadOnly(false);
-						m_scintilla1->AppendText("read gameObjects successfully! " + myX + "\n");
-						m_scintilla1->SetReadOnly(true);
-					}
-
-					if (line.Contains("ScaleY [" + std::to_string(i) + "]"))
-					{
-						std::string myY = line.Remove(0, 11);
-
-						sclY = ::atof(myY.c_str());
-
-						m_scintilla1->SetReadOnly(false);
-						m_scintilla1->AppendText("read gameObjects successfully! " + myY + "\n");
-						m_scintilla1->SetReadOnly(true);
-					}
-
-					if (line.Contains("ScaleZ [" + std::to_string(i) + "]"))
-					{
-						std::string myZ = line.Remove(0, 11);
-
-						sclZ = ::atof(myZ.c_str());
-
-						m_scintilla1->SetReadOnly(false);
-						m_scintilla1->AppendText("read gameObjects successfully! " + myZ + "\n");
-						m_scintilla1->SetReadOnly(true);
-					}
-					//i++;
-				}
-				if (line.Contains("[END OF OBJECT]"))
-				{
-					int k = 0;
-
-					if (k < numGos)
-					{
-						position = glm::vec3(posX, posY, posZ);
-						rotation = glm::vec3(rotX, rotY, rotZ);
-						scale = glm::vec3(sclX, sclY, sclZ);
-
-						GameObject3D *go = new GameObject3D(m_file);
-
-						go->setName(m_objName);
-						go->setPosition(position);
-						go->setRotation(rotation);
-						go->setScale(scale);
-
-						canvas3D->addGameObject(go);
-
-						k++;
-					}
-				}*/
-			//}
-			/*canvas3D->SetLabel(OpenDialog.GetFilename());
-			canvas3Ds.push_back(canvas3D);
-
-			canvas3D->SetFocus();*/
+			//m_scintilla1->SetReadOnly(false);
+			//m_scintilla1->AppendText("GameObjects in scene: " + oss.str());
 
 			canvas3D->setOutput(*m_scintilla1);
 
-			/*dirPath = OpenDialog.GetDirectory();
-
-			if (canvas3Ds.size() == 1)
+			/*if (canvas3Ds.size() == 1)
 			{
 				wxPGProperty* positionProp = m_propertyGrid1->Append(new wxPropertyCategory("Transform"));
 
@@ -1126,16 +751,8 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 			wxFileDialog SaveDialog(
 				this, _("Choose a filetype to save to"), wxEmptyString, wxEmptyString, _("LUA Scripts (*.lua)|*.lua|2D Scenes (*.2ds) | *.2ds|3D Scenes (*.3ds)|*.3ds"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
 
-			//int response = SaveDialog.ShowModal();
 			if (SaveDialog.ShowModal() == wxID_OK)
 			{
-				/*if (!current_label.EndsWith(" (*)"))
-				{
-
-				}*/
-
-				//wxLogMessage("current_page_index = %p", current_page_index);
-				//wxLogMessage("currControl = %p", currControl);
 				if (SaveDialog.GetPath().EndsWith(".lua"))
 				{
 					if (currControl != nullptr)
@@ -1168,78 +785,24 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 
 								fstream file(path, ios::binary | ios::out | ios::trunc);
 
-								/*for (int i = 0; i < lineCount; i++)
+								if (!file.is_open())
 								{
-								file.RemoveLine(i);
+									cout << "error opening file!" << endl;
 								}
-
-								file.AddLine("GameObjects in scene: " + std::to_string((*iter)->getMyGameObjects().size()));
-								file.AddLine("");*/
-
-								//for (int i = 0; i < (*iter)->getMyGameObjects().size(); i++)
-								//{
-									/*file.AddLine("[BEGIN OF OBJECT]");
-									file.AddLine("Filepath [" + std::to_string(i) + "] " + (*iter)->getMyGameObjects()[i]->getFilepath());
-									file.AddLine("Name [" + std::to_string(i) + "] " + (*iter)->getMyGameObjects()[i]->getName());
-
-									file.AddLine("PositionX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().x));
-									file.AddLine("PositionY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().y));
-									file.AddLine("PositionZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().z));
-									file.AddLine("RotationX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().x));
-									file.AddLine("RotationY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().y));
-									file.AddLine("RotationZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().z));
-									file.AddLine("ScaleX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().x));
-									file.AddLine("ScaleY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().y));
-									file.AddLine("ScaleZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().z));
-									file.AddLine("[END OF OBJECT]");
-									file.AddLine("");*/
-
-									/*FILE *fileWrite = fopen(path.c_str(), "wb");
-									fwrite(&go, sizeof(GameObject3D::gameObject), 1, fileWrite);
-									fflush(fileWrite);
-									fclose(fileWrite);*/
-
-									if (!file.is_open())
+								else
+								{
+									for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
 									{
-										cout << "error opening file!" << endl;
+										GameObject3D::gameObject *gos;
+										gos = (*goIter);
+
+										file.write((char *)gos, sizeof(GameObject3D::gameObject));
 									}
-									else
-									{
-										/*for (std::vector<GameObject3D *>::iterator goIter = (*iter)->getMyGameObjects().begin(); goIter != (*iter)->getMyGameObjects().end(); ++goIter)
-										{
-											numberOfGOS++;
-											//(*goIter)->
-										}*/
-
-										//file.write((char *)numberOfGOS, 4);
-										
-										for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
-										{
-											GameObject3D::gameObject *gos;
-											gos = (*goIter);
-
-											file.write((char *)gos, sizeof(GameObject3D::gameObject));
-										}
-
-										//file.seekg(0);
-
-										//Person test;
-
-										//file.read((char *)&test, sizeof(Person));
-
-										//test.whoAreYou();
-
-										//file.close();
-									}
-								//}
+								}
 
 								file.close();
 
-								//file.Write();
-
 								(*iter)->SetLabel(current_label);
-
-								//file.Close();
 							}
 						}
 						m_auinotebook1->SetPageText(current_page_index, current_label);
@@ -1262,8 +825,6 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 			{
 				if (m_auinotebook1->GetPageText(current_page_index) != "3D Scene" || !m_auinotebook1->GetPageText(current_page_index).EndsWith(".3ds"))
 				{
-					//wxString newLabel = current_label.Remove(current_label.length() - 2, 2);
-
 					wxTextFile file(dirPath + "\\" + current_label);
 
 					int lineCount = file.GetLineCount();
@@ -1307,81 +868,28 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 						{
 							if (current_label == (*iter)->GetLabel())
 							{
-								/*for (int i = 0; i < lineCount; i++)
+								std::string path = SaveDialog.GetPath();
+
+								fstream file(path, ios::binary | ios::out | ios::trunc);
+
+								if (!file.is_open())
 								{
-								file.RemoveLine(i);
+									cout << "error opening file!" << endl;
+								}
+								else
+								{
+									for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
+									{
+										GameObject3D::gameObject *gos;
+										gos = (*goIter);
+
+										file.write((char *)gos, sizeof(GameObject3D::gameObject));
+									}
 								}
 
-								file.AddLine("GameObjects in scene: " + std::to_string((*iter)->getMyGameObjects().size()));
-								file.AddLine("");*/
-
-								//for (int i = 0; i < (*iter)->getMyGameObjects().size(); i++)
-								//{
-									/*file.AddLine("[BEGIN OF OBJECT]");
-									file.AddLine("Filepath [" + std::to_string(i) + "] " + (*iter)->getMyGameObjects()[i]->getFilepath());
-									file.AddLine("Name [" + std::to_string(i) + "] " + (*iter)->getMyGameObjects()[i]->getName());
-
-									file.AddLine("PositionX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().x));
-									file.AddLine("PositionY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().y));
-									file.AddLine("PositionZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().z));
-									file.AddLine("RotationX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().x));
-									file.AddLine("RotationY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().y));
-									file.AddLine("RotationZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().z));
-									file.AddLine("ScaleX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().x));
-									file.AddLine("ScaleY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().y));
-									file.AddLine("ScaleZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().z));
-									file.AddLine("[END OF OBJECT]");
-									file.AddLine("");*/
-
-									std::string path = SaveDialog.GetPath();
-
-									/*FILE *fileWrite = fopen(path.c_str(), "wb");
-									fwrite(&go, sizeof(GameObject3D::gameObject), 1, fileWrite);
-									fflush(fileWrite);
-									fclose(fileWrite);*/
-
-									fstream file(path, ios::binary | ios::out | ios::trunc);
-
-									if (!file.is_open())
-									{
-										cout << "error opening file!" << endl;
-									}
-									else
-									{
-										/*for (std::vector<GameObject3D *>::iterator goIter = (*iter)->getMyGameObjects().begin(); goIter != (*iter)->getMyGameObjects().end(); ++goIter)
-										{
-											numberOfGOS++;
-											//(*goIter)->
-										}*/
-
-										//file.write((char *)numberOfGOS, 4);
-										for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
-										{
-											GameObject3D::gameObject *gos;
-											gos = (*goIter);
-
-											file.write((char *)gos, sizeof(GameObject3D::gameObject));
-										}
-										
-										//file.seekg(0);
-
-										//Person test;
-
-										//file.read((char *)&test, sizeof(Person));
-
-										//test.whoAreYou();
-
-										//file.close();
-									}
-
-									file.close();
-								//}
-
-								//file.Write();
+								file.close();
 
 								(*iter)->SetLabel(current_label);
-
-								//file.Close();
 							}
 						}
 						m_auinotebook1->SetPageText(current_page_index, current_label);
@@ -1425,78 +933,28 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 					{
 						if (current_label == (*iter)->GetLabel())
 						{
-							/*for (int i = 0; i < lineCount; i++)
+							std::string path = SaveDialog.GetPath();
+
+							fstream file(path, ios::binary | ios::out | ios::trunc);
+
+							if (!file.is_open())
 							{
-							file.RemoveLine(i);
+								cout << "error opening file!" << endl;
+							}
+							else
+							{
+								for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
+								{
+									GameObject3D::gameObject *gos;
+									gos = (*goIter);
+
+									file.write((char *)gos, sizeof(GameObject3D::gameObject));
+								}
 							}
 
-							file.AddLine("GameObjects in scene: " + std::to_string((*iter)->getMyGameObjects().size()));
-							file.AddLine("");*/
-
-							//for (int i = 0; i < (*iter)->getMyGameObjects().size(); i++)
-							//{
-								/*file.AddLine("[BEGIN OF OBJECT]");
-								file.AddLine("Filepath [" + std::to_string(i) + "] " + (*iter)->getMyGameObjects()[i]->getFilepath());
-								file.AddLine("Name [" + std::to_string(i) + "] " + (*iter)->getMyGameObjects()[i]->getName());
-
-								file.AddLine("PositionX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().x));
-								file.AddLine("PositionY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().y));
-								file.AddLine("PositionZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().z));
-								file.AddLine("RotationX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().x));
-								file.AddLine("RotationY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().y));
-								file.AddLine("RotationZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().z));
-								file.AddLine("ScaleX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().x));
-								file.AddLine("ScaleY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().y));
-								file.AddLine("ScaleZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().z));
-								file.AddLine("[END OF OBJECT]");
-								file.AddLine("");*/
-
-								std::string path = SaveDialog.GetPath();
-
-								/*FILE *fileWrite = fopen(path.c_str(), "wb");
-								fwrite(&go, sizeof(GameObject3D::gameObject), 1, fileWrite);
-								fflush(fileWrite);
-								fclose(fileWrite);*/
-
-								fstream file(path, ios::binary | ios::out | ios::trunc);
-
-								if (!file.is_open())
-								{
-									cout << "error opening file!" << endl;
-								}
-								else
-								{
-									/*for (std::vector<GameObject3D *>::iterator goIter = (*iter)->getMyGameObjects().begin(); goIter != (*iter)->getMyGameObjects().end(); ++goIter)
-									{
-										numberOfGOS++;
-										//(*goIter)->
-									}*/
-
-									//file.write((char *)numberOfGOS, 4);
-									for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
-									{
-										GameObject3D::gameObject *gos;
-										gos = (*goIter);
-
-										file.write((char *)gos, sizeof(GameObject3D::gameObject));
-									}
-									//file.seekg(0);
-
-									//Person test;
-
-									//file.read((char *)&test, sizeof(Person));
-
-									//test.whoAreYou();
-
-									//file.close();
-								}
-							//}
-								file.close();
-							//file.Write();
+							file.close();
 
 							(*iter)->SetLabel(current_label);
-
-							//file.Close();
 						}
 					}
 					m_auinotebook1->SetPageText(current_page_index, SaveDialog.GetFilename());
@@ -1522,17 +980,11 @@ void MyFrame1::SaveFileAs(wxCommandEvent& WXUNUSED(event))
 
 		if (SaveDialog.ShowModal() == wxID_OK)
 		{
-			//wxLogMessage("currControl = %p", currControl);
 			if (SaveDialog.GetPath().EndsWith(".lua"))
 			{
 				if (currControl != nullptr)
 				{
 					currControl->SaveFile(SaveDialog.GetPath());
-
-					/*if (!current_label.EndsWith(" (*)"))
-					{
-
-					}*/
 
 					m_auinotebook1->SetPageText(current_page_index, SaveDialog.GetFilename());
 					
@@ -1545,10 +997,6 @@ void MyFrame1::SaveFileAs(wxCommandEvent& WXUNUSED(event))
 
 				if (m_auinotebook1->GetPageText(current_page_index) == newLabel)
 				{
-					//wxTextFile file(dirPath + "\\" + current_label);
-
-					//int lineCount = file.GetLineCount();
-
 					for (std::vector<Viewport3D *>::iterator iter = canvas3Ds.begin(); iter != canvas3Ds.end(); ++iter)
 					{
 						if (current_label == (*iter)->GetLabel())
@@ -1557,91 +1005,24 @@ void MyFrame1::SaveFileAs(wxCommandEvent& WXUNUSED(event))
 
 							fstream file(path, ios::binary | ios::out | ios::trunc);
 
-							/*for (int i = 0; i < lineCount; i++)
+							if (!file.is_open())
 							{
-								file.RemoveLine(i);
+								cout << "error opening file!" << endl;
+							}
+							else
+							{
+								for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
+								{
+									GameObject3D::gameObject *gos;
+									gos = (*goIter);
+
+									file.write((char *)gos, sizeof(GameObject3D::gameObject));
+								}
 							}
 
-							file.AddLine("GameObjects in scene: " + std::to_string((*iter)->getMyGameObjects().size()));
-							file.AddLine("");*/
-
-							//for (int i = 0; i < (*iter)->getMyGameObjects().size(); i++)
-							//{
-								/*file.AddLine("[BEGIN OF OBJECT]");
-								file.AddLine("Filepath [" + std::to_string(i) + "] " + (*iter)->getMyGameObjects()[i]->getFilepath());
-								file.AddLine("Name [" + std::to_string(i) + "] " + (*iter)->getMyGameObjects()[i]->getName());
-
-								file.AddLine("PositionX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().x));
-								file.AddLine("PositionY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().y));
-								file.AddLine("PositionZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().z));
-								file.AddLine("RotationX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().x));
-								file.AddLine("RotationY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().y));
-								file.AddLine("RotationZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().z));
-								file.AddLine("ScaleX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().x));
-								file.AddLine("ScaleY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().y));
-								file.AddLine("ScaleZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().z));
-								file.AddLine("[END OF OBJECT]");
-								file.AddLine("");*/
-								
-								/*FILE *fileWrite = fopen(path.c_str(), "wb");
-								fwrite(&go, sizeof(GameObject3D::gameObject), 1, fileWrite);
-								fflush(fileWrite);
-								fclose(fileWrite);*/
-
-								if (!file.is_open())
-								{
-									cout << "error opening file!" << endl;
-								}
-								else
-								{
-									/*for (std::vector<GameObject3D *>::iterator goIter = (*iter)->getMyGameObjects().begin(); goIter != (*iter)->getMyGameObjects().end(); ++goIter)
-									{
-										numberOfGOS++;
-										//(*goIter)->
-									}*/
-
-									//file.write((char *)numberOfGOS, 4);
-									//file.write((char *)&go, sizeof(GameObject3D::gameObject));
-									
-									for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
-									{
-										GameObject3D::gameObject *gos;
-										gos = (*goIter);
-
-										file.write((char *)gos, sizeof(GameObject3D::gameObject));
-									}
-
-									//file.seekg(0);
-
-									//Person test;
-
-									//file.read((char *)&test, sizeof(Person));
-
-									//test.whoAreYou();
-
-									//file.close();
-								}
-
-								//wxLogMessage("File contains now = %s, %s!", go.m_name, go.m_filepath);
-								/*if (fileWrite != NULL)
-								{
-								ostringstream oss;
-								oss << go3D.m_name << ", " << go3D.m_positionXYZ.y << ", " << go3D.m_positionXYZ.z;
-
-								std::string str = oss.str();
-
-								fputs(str.c_str(), fileWrite);
-								fclose(fileWrite);
-								}*/
-							//}
-
 							file.close();
-
-							//file.Write();
 						
 							(*iter)->SetLabel(current_label);
-
-							//file.Close();
 						}
 					}
 					m_auinotebook1->SetPageText(current_page_index, current_label);
@@ -1665,19 +1046,6 @@ void MyFrame1::SaveFileAs(wxCommandEvent& WXUNUSED(event))
 			if (SaveDialog.GetPath().EndsWith(".lua"))
 			{
 				std::string path = SaveDialog.GetPath();
-
-				//Student me;
-				//me.saveToBinary(path);
-				//me.loadFromBinary(path);
-
-				/*if (currControl != nullptr)
-				{
-					currControl->SaveFile(SaveDialog.GetPath());
-					
-					m_auinotebook1->SetPageText(current_page_index, SaveDialog.GetFilename());
-
-					hasSavedFile = true;
-				}*/
 			}
 
 			if (SaveDialog.GetPath().EndsWith(".2ds"))
@@ -1711,85 +1079,24 @@ void MyFrame1::SaveFileAs(wxCommandEvent& WXUNUSED(event))
 
 						fstream file(path, ios::binary | ios::out | ios::trunc);
 
-						//file.AddLine("GameObjects in scene: " + std::to_string((*iter)->getMyGameObjects().size()));
-						//file.AddLine("");
-
-						//for (int i = 0; i < (*iter)->getMyGameObjects().size(); i++)
-						//{
-							/*file.AddLine("[BEGIN OF OBJECT]");
-							file.AddLine("Filepath [" + std::to_string(i) + "] " + (*iter)->getMyGameObjects()[i]->getFilepath());
-							file.AddLine("Name [" + std::to_string(i) + "] " + (*iter)->getMyGameObjects()[i]->getName());
-
-							file.AddLine("PositionX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().x));
-							file.AddLine("PositionY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().y));
-							file.AddLine("PositionZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getPosition().z));
-							file.AddLine("RotationX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().x));
-							file.AddLine("RotationY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().y));
-							file.AddLine("RotationZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getRotation().z));
-							file.AddLine("ScaleX [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().x));
-							file.AddLine("ScaleY [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().y));
-							file.AddLine("ScaleZ [" + std::to_string(i) + "] " + std::to_string((*iter)->getMyGameObjects()[i]->getScale().z));
-							file.AddLine("[END OF OBJECT]");
-							file.AddLine("");*/
-
-							/*FILE *fileWrite = fopen(path.c_str(), "wb");
-							fwrite(&go, sizeof(GameObject3D::gameObject), 1, fileWrite);
-							fflush(fileWrite);
-							fclose(fileWrite);*/
-
-							if (!file.is_open())
+						if (!file.is_open())
+						{
+							cout << "error opening file!" << endl;
+						}
+						else
+						{
+							for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
 							{
-								cout << "error opening file!" << endl;
+								GameObject3D::gameObject *gos;
+								gos = (*goIter);
+
+								file.write((char *)gos, sizeof(GameObject3D::gameObject));
 							}
-							else
-							{
-								/*for (std::vector<GameObject3D *>::iterator goIter = (*iter)->getMyGameObjects().begin(); goIter != (*iter)->getMyGameObjects().end(); ++goIter)
-								{
-									numberOfGOS++;
-									//(*goIter)->
-								}*/
-
-								//file.write((char *)numberOfGOS, 4);
-
-								for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
-								{
-									GameObject3D::gameObject *gos;
-									gos = (*goIter);
-
-									file.write((char *)gos, sizeof(GameObject3D::gameObject));
-								}
-
-								//file.seekg(0);
-
-								//Person test;
-
-								//file.read((char *)&test, sizeof(Person));
-
-								//test.whoAreYou();
-
-								//file.close();
-							}
-
-							//wxLogMessage("File contains now = %s, %s!", go.m_name, go.m_filepath);
-							
-							/*if (fileWrite != NULL)
-							{
-								ostringstream oss;
-								oss << go3D.m_name << ", " << go3D.m_positionXYZ.y << ", " << go3D.m_positionXYZ.z;
-
-								std::string str = oss.str();
-
-								fputs(str.c_str(), fileWrite);
-								fclose(fileWrite);
-							}*/
-						//}
+						}
 
 						file.close();
-						//file.Write();
-
+						
 						(*iter)->SetLabel(SaveDialog.GetFilename());
-
-						//file.Close();
 					}
 				}
 			}
@@ -1823,8 +1130,6 @@ void MyFrame1::Import(wxCommandEvent& WXUNUSED(event))
 			{
 				if (current_label == (*iter)->GetLabel())
 				{
-					//GameObject3D *model = new GameObject3D(path);
-
 					GameObject3D *model = new GameObject3D(path);
 					GameObject3D::gameObject *gameObj = new GameObject3D::gameObject();
 					
@@ -1840,9 +1145,6 @@ void MyFrame1::Import(wxCommandEvent& WXUNUSED(event))
 					model->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 					model->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 					model->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
-
-					//numberOfGOS += 1;
-					//numberOfGOS++;
 
 					gameObjects.push_back(gameObj);
 
@@ -1863,7 +1165,6 @@ void MyFrame1::Import(wxCommandEvent& WXUNUSED(event))
 				{
 					name.resize(name.length() - 4);
 
-					//go3D.setFilePath(path);
 					go.setName((char*)name.c_str());
 					go3D.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 					go3D.setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -1886,7 +1187,6 @@ void MyFrame1::Import(wxCommandEvent& WXUNUSED(event))
 				{
 					name.resize(name.length() - 4);
 
-					//go3D.setFilePath(path);
 					go.setName((char*)name.c_str());
 					go3D.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 					go3D.setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -1909,7 +1209,6 @@ void MyFrame1::Import(wxCommandEvent& WXUNUSED(event))
 				{
 					name.resize(name.length() - 4);
 
-					//go3D.setFilePath(path);
 					go.setName((char*)name.c_str());
 					go3D.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 					go3D.setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -1930,7 +1229,6 @@ void MyFrame1::Exit(wxCommandEvent& WXUNUSED(event))
 
 void MyFrame1::AudioPlayer(wxCommandEvent &WXUNUSED(event))
 {	
-	//playerDlg.Show(true);
 	if (!wantsToShowAP)
 	{
 		wantsToShowAP = true;
@@ -1939,7 +1237,6 @@ void MyFrame1::AudioPlayer(wxCommandEvent &WXUNUSED(event))
 	{
 		wantsToShowAP = false;
 	}
-	//MyApp::playerDlg->Show(true);
 }
 
 void MyFrame1::Debug(wxCommandEvent &WXUNUSED(event))
@@ -1980,7 +1277,6 @@ void MyFrame1::OnSetFocus(wxFocusEvent &event)
 	wxStyledTextCtrl *stc = wxDynamicCast(event.GetEventObject(), wxStyledTextCtrl);
 	if (stc != NULL)
 	{
-		//stc->SetCaretLineVisibleAlways(true);
 		stc->SetSTCFocus(true);
 		SetActiveTextCtrl(stc);
 	}
@@ -1989,8 +1285,6 @@ void MyFrame1::OnSetFocus(wxFocusEvent &event)
 void MyFrame1::SetActiveTextCtrl(wxStyledTextCtrl *stc)
 {
 	currControl = stc;
-
-	//currControl->SetCaretLineVisibleAlways(true);
 }
 
 void MyFrame1::OnChangeSTC(wxStyledTextEvent &event)
@@ -2033,17 +1327,6 @@ void MyFrame1::OnChangeSTC(wxStyledTextEvent &event)
 			}
 		}
 	}
-
-	/*if (!current_label.EndsWith(" *"))
-	{
-		//m_auinotebook1->SetPageText(current_page_index, current_label + " *");
-	}
-	else if (current_label.EndsWith(" *") && hasSavedFile == true)
-	{
-		wxString newLabel = current_label.Remove(current_label.length() - 2, 2);
-
-		m_auinotebook1->SetPageText(current_page_index, newLabel);
-	}*/
 }
 
 void MyFrame1::OnChange(wxStyledTextEvent& event)
