@@ -39,6 +39,8 @@ public:
 	void init();
 	void destroy();
 
+	void destroyMusic();
+
 	SoundEffect loadSoundEffect(const std::string &filePath);
 	Music loadMusic(const std::string &filePath);
 

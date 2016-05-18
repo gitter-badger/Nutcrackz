@@ -25,9 +25,12 @@
 
 #include "viewport2d.h"
 #include "viewport3d.h"
+#include "audiodlg.h"
 #include "wx/glcanvas.h"
 
 #include <vector>
+
+//#include "musicplayer.h"
 
 class MyFrame1;
 
@@ -38,7 +41,12 @@ class MyApp : public wxApp
 	void onIdle(wxIdleEvent& evt);
 
 	MyFrame1 *frame;
+	AudioPlayerDlg *playerDlg;
+
+	//MusicPlayer musicPlayer;
+	
 	bool render_loop_on;
+	bool audioPlayerIsShown;
 
 public:
 	void activateRenderLoop(bool on);
@@ -60,6 +68,7 @@ public:
 	void Import(wxCommandEvent& WXUNUSED(event));
 	void Exit(wxCommandEvent& WXUNUSED(event));
 	void Debug(wxCommandEvent &WXUNUSED(event));
+	void AudioPlayer(wxCommandEvent &WXUNUSED(event));
 
 	void OnSetFocus(wxFocusEvent &event);
 	void SetActiveTextCtrl(wxStyledTextCtrl *stc);
@@ -67,6 +76,7 @@ public:
 	void OnKeyUp(wxKeyEvent &event);
 	void OnChangeSTC(wxStyledTextEvent &event);
 	void OnPropertyGridChange(wxPropertyGridEvent& event);
+	void OnClose(wxCloseEvent& event);
 
 	//Events
 	//void OnKeyDown(wxKeyEvent &event);
@@ -86,6 +96,9 @@ public:
 			(*iter)->setDeltaTime(value);
 		}
 	}
+
+	bool hasBeenClosed;
+	bool wantsToShowAP;
 
 protected:
 	wxTreeCtrl* m_treeCtrl1;
@@ -129,18 +142,29 @@ private:
 	bool keys[500];
 	bool hasOpenedFile;
 	bool hasSavedFile;
-
+	bool hasChanged;
+	
 	int canvas2DCounter = 1;
 	int canvas3DCounter = 1;
+	//int numberOfGOS = 0;
 
 	wxPGProperty* aLight;
 	wxPGProperty* dLight;
 	wxVariant varAmbient;
 	wxVariant varDiffuse;
+	
+	GameObject3D go3D;
+	GameObject3D::gameObject go;
+
+	std::vector<GameObject3D::gameObject *> gameObjects;
+
+	//MusicPlayer musicPlayer;
 
 	char *input;
 
 	//InputManager m_input;
+
+	//AudioPlayerDlg *playerDlg = new AudioPlayerDlg(NULL, wxID_ANY);
 
 	wxString dirPath;
 

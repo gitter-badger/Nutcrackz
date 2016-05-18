@@ -50,7 +50,7 @@ Viewport3D::Viewport3D(wxPanel* parent, int* args, long style) :
 	m_diffuseIntensity = 1.0f;
 
 	//m_pEffect.Init();
-	picker = new Picking();
+	//picker = new Picking();
 
 	m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
 	m_directionalLight.AmbientIntensity = m_ambientIntensity;
@@ -204,6 +204,8 @@ void Viewport3D::render(wxPaintEvent& evt)
 
 	m_input.update();
 
+
+
 	view = camera.getWorldToViewMatrix();
 
 	projection = glm::perspective(45.0f, float(getWidth()) / float(getHeight()), 0.1f, 1000.0f);
@@ -256,6 +258,14 @@ void Viewport3D::render(wxPaintEvent& evt)
 
 		(*iter)->getObjectModel().Draw(shader);
 	}
+
+	/*for (int i = 0; i < getMyGameObjects().size(); i++)
+	{
+		numberOfGos++;
+	}*/
+
+	//The plan is to use the numberOfGos to calculate,
+	//how many times the fileWriter have to repeat the same step!
 
 	glm::mat4 _model3;
 	_model3 = glm::translate(_model3, glm::vec3(0.0f, 0.0f, 0.0f)); // Translate it down a bit so it's at the center of the scene
@@ -555,11 +565,20 @@ void Viewport3D::OnMouseDown(wxMouseEvent& event)
 		{
 			SetFocus();
 		}
+		//printf("Coordinates in object space: %f, %f, %f\n",
+			//objcoord.x, objcoord.y, objcoord.z);
+
+		//objcoord = glm::project(wincoord, view, projection, viewport);
 	}	
 
-	glm::vec3 ray_origin;
+	glm::vec4 viewport = glm::vec4(0, 0, getWidth(), getHeight());
+	glm::vec3 wincoord = glm::vec3(mouseX, getHeight() - mouseY - 1, depth);
+	glm::vec3 objcoord = glm::unProject(wincoord, view, projection, viewport);
+	
+	wxLogMessage("Coordinates in object space: %f, %f, %f", objcoord.x, objcoord.y, objcoord.z);
+	/*glm::vec3 ray_origin;
 	glm::vec3 ray_direction;
-	picker->ScreenPosToWorldRay(mouseX, mouseY, getWidth(), getHeight(), view, projection, ray_origin, ray_direction);
+	//picker->ScreenPosToWorldRay(mouseX, mouseY, getWidth(), getHeight(), view, projection, ray_origin, ray_direction);
 
 	//for (int i = 0; i < gameObjects.size(); i++)
 	for (int i = 0; i < gameObjects.size(); i++)
@@ -584,9 +603,9 @@ void Viewport3D::OnMouseDown(wxMouseEvent& event)
 			//message(*m_output, "GameObject " + (*iter)->getName() + " is selected!");
 			message(*m_output, "GameObject " + gameObjects[i]->getName() + " is selected!");
 			//}
-			/*std::ostringstream oss;
-			oss << "mesh " << i;
-			message = oss.str();*/
+			//std::ostringstream oss;
+			//oss << "mesh " << i;
+			//message = oss.str();
 			break;
 		}
 		else
@@ -594,7 +613,7 @@ void Viewport3D::OnMouseDown(wxMouseEvent& event)
 			message(*m_output, "Background");
 			break;
 		}
-	}
+	}*/
 }
 
 void Viewport3D::OnMouseWheelMoved(wxMouseEvent& event)
@@ -606,6 +625,8 @@ void Viewport3D::OnMouseReleased(wxMouseEvent& event)
 {
 	leftButtonClicked = false;
 	rightButtonClicked = false;
+
+	//message(*m_output, result);
 }
 
 void Viewport3D::OnRightClick(wxMouseEvent& event)

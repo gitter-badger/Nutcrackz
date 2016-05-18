@@ -88,11 +88,14 @@ public:
 	void OnKeyDown(wxKeyEvent &event);
 	void OnKeyUp(wxKeyEvent &event);
 	
+	//static int numberOfGos;
 private:
 	void InitOpenGl();
 	
 	GLuint loadTexture(GLchar const * path);
 	GLuint loadCubemap(std::vector<const GLchar*> faces);
+
+
 
 	bool InitGL;
 	bool model3DSelected = false;
@@ -104,7 +107,7 @@ private:
 	bool hasGameObjects = false;
 	int mouseX;
 	int mouseY;
-
+	
 	float m_scale;
 
 	float m_ambientIntensity;
@@ -113,6 +116,8 @@ private:
 	GLuint cubeVAO, cubeVBO;
 	GLuint skyboxVAO, skyboxVBO;
 	GLuint skyboxTexture;
+
+	GLfloat depth = 0;
 
 	btDiscreteDynamicsWorld* dynamicsWorld;
 	btSequentialImpulseConstraintSolver* solver;
@@ -147,6 +152,8 @@ private:
 	glm::mat4 view;
 	glm::mat4 projection;
 
+	std::string result;
+
 	wxStyledTextCtrl *m_output;
 	
 	GLfloat lastFrame = 0.0f;
@@ -154,7 +161,7 @@ private:
 	InputManager m_input;
 	Camera3D camera;
 
-	Picking *picker;
+	//Picking *picker;
 
 	ShaderProgram skyboxShader;
 

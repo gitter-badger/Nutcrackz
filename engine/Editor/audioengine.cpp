@@ -58,7 +58,7 @@ void AudioEngine::init()
 		fatalError("Mix_Init error: " + std::string(Mix_GetError()));
 	}
 
-	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
+	if (Mix_OpenAudio(/*MIX_DEFAULT_FREQUENCY*/44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
 	{
 		fatalError("Mix_OpenAudio error: " + std::string(Mix_GetError()));
 	}
@@ -81,6 +81,24 @@ void AudioEngine::destroy()
 		}
 
 		m_effectMap.clear();
+		m_musicMap.clear();
+
+		Mix_CloseAudio();
+		Mix_Quit();
+
+		m_isInitialized = false;
+	}
+}
+
+void AudioEngine::destroyMusic()
+{
+	if (m_isInitialized == true)
+	{
+		for (auto &it : m_musicMap)
+		{
+			Mix_FreeMusic(it.second);
+		}
+
 		m_musicMap.clear();
 
 		Mix_CloseAudio();

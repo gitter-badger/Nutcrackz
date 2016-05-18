@@ -108,6 +108,12 @@
     <ClCompile Include="inputmanager.cpp">
       <Filter>Common Files</Filter>
     </ClCompile>
+    <ClCompile Include="audiodlg.cpp">
+      <Filter>Main Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rwtobinary.cpp">
+      <Filter>Common Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gltexture.h">
@@ -237,6 +243,15 @@
       <Filter>Common Files</Filter>
     </ClInclude>
     <ClInclude Include="time.h">
+      <Filter>Common Files</Filter>
+    </ClInclude>
+    <ClInclude Include="audiodlg.h">
+      <Filter>Main Files</Filter>
+    </ClInclude>
+    <ClInclude Include="musicplayer.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="rwtobinary.h">
       <Filter>Common Files</Filter>
     </ClInclude>
   </ItemGroup>
