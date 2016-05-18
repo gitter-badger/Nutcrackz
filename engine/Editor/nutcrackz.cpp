@@ -627,11 +627,11 @@ void MyFrame1::OpenFile(wxCommandEvent& WXUNUSED(event))
 			gameObjects.resize(objCount - 1);
 			canvas3D->resizeGameObjects(objCount - 1);
 
-			//ostringstream oss;
-			//oss << gameObjects.size();//canvas3D->getMyGameObjects().size();
+			/*ostringstream oss;
+			oss << canvas3D->getMyGameObjects().size();//gameObjects.size();
 
-			//m_scintilla1->SetReadOnly(false);
-			//m_scintilla1->AppendText("GameObjects in scene: " + oss.str());
+			m_scintilla1->SetReadOnly(false);
+			m_scintilla1->AppendText("GameObjects in scene: " + oss.str());*/
 
 			canvas3D->setOutput(*m_scintilla1);
 
@@ -1140,7 +1140,8 @@ void MyFrame1::Import(wxCommandEvent& WXUNUSED(event))
 					gameObj->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 					gameObj->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 					gameObj->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
-
+					gameObj->setNewLine("\n");
+					
 					model->setName(name);
 					model->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 					model->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));

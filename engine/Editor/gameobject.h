@@ -54,16 +54,19 @@ public:
 	{
 		void setName(char *name) { strcpy(m_name, name); }
 		void setPath(char *path) { strcpy(m_filepath, path); }
+		void setNewLine(char *lineChange) { strcpy(m_newline, lineChange); }
 		void setPosition(glm::vec3 value) { m_positionXYZ = glm::vec3(value.x, value.y, value.z); }
 		void setRotation(glm::vec3 value) { m_rotationXYZ = value; }
 		void setScale(glm::vec3 value) { m_scaleXYZ = value; }
 
-		char m_filepath[500];
+		char m_filepath[200];
 		char m_name[50];
 
 		glm::vec3 m_positionXYZ;
 		glm::vec3 m_rotationXYZ;
 		glm::vec3 m_scaleXYZ;
+
+		char m_newline[2];
 	};
 
 	GameObject3D() {}
