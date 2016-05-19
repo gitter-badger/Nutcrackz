@@ -1,4 +1,4 @@
-# Nutcrackz_Game_Engine
+# Nutcrackz
 Nutcrackz Game Engine - A custom made OpenGL Game Engine made in C++
 
 Nutcrackz is an open source custom game engine, that is aiming to include 2D game engine, 3D game engine and script editor into one,
