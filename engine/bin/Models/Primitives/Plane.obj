@@ -1,0 +1,18 @@
+# OBJ written from F:\Dropbox\VS 2015 Projects\Nutcrackz\Primitives\Plane.obj
+# Units	meters
+
+o Plane
+v -0.5 0.5 8.04061e-017
+v 0.5 0.5 8.04061e-017
+v 0.5 -0.5 -8.04061e-017
+v -0.5 -0.5 -8.04061e-017
+vn 0 -1.60812e-016 1
+vt 0 1
+vt 0 0
+vt 1 1
+vt 1 0
+mtllib Plane.mtl
+usemtl Default
+g Default
+f 1/1/1 4/2/1 2/3/1
+f 3/4/1 2/3/1 4/2/1

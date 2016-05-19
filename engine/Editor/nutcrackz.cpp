@@ -561,22 +561,7 @@ void MyFrame1::OpenFile(wxCommandEvent& WXUNUSED(event))
 			tmpBS->Fit(tmpPanel);
 
 			m_auinotebook1->AddPage(tmpPanel, OpenDialog.GetFilename(), false, wxNullBitmap);
-
-			float posX, posY, posZ;
-			float rotX, rotY, rotZ;
-			float sclX, sclY, sclZ;
-
-			int numGos;
-
-			std::string m_file;
-			std::string m_objName;
-
-			glm::vec3 position;
-			glm::vec3 rotation;
-			glm::vec3 scale;
 			
-			int j = -1;
-
 			canvas3D->SetLabel(OpenDialog.GetFilename());
 			canvas3Ds.push_back(canvas3D);
 
@@ -617,14 +602,14 @@ void MyFrame1::OpenFile(wxCommandEvent& WXUNUSED(event))
 				go3D->setRotation(test.m_rotationXYZ);
 				go3D->setScale(test.m_scaleXYZ);
 
-				gameObjects.push_back(gameObj);
+				gameObjects3D.push_back(gameObj);
 
 				canvas3D->addGameObject(go3D);
 				objCount++;
 			}
 			file.close();
 
-			gameObjects.resize(objCount - 1);
+			gameObjects3D.resize(objCount - 1);
 			canvas3D->resizeGameObjects(objCount - 1);
 
 			/*ostringstream oss;
@@ -680,50 +665,55 @@ void MyFrame1::OpenFile(wxCommandEvent& WXUNUSED(event))
 			tmpBS->Fit(tmpPanel);
 			m_auinotebook1->AddPage(tmpPanel, OpenDialog.GetFilename(), false, wxNullBitmap);
 
-			float posX;
-			float posY;
-
-			glm::vec2 position;
-
-			wxFileInputStream input(OpenDialog.GetPath());
-			wxTextInputStream text(input, wxT("\x09"), wxConvUTF8);
-			while (input.IsOk() && !input.Eof())
-			{
-				wxString line = text.ReadLine();
-				
-				// do something with the string
-				if (line.StartsWith("Position X:"))
-				{
-					std::string x = line.Remove(0, 12);
-
-					posX = ::atof(x.c_str());
-				}
-
-				if (line.StartsWith("Position Y:"))
-				{
-					std::string y = line.Remove(0, 12);
-
-					posY = ::atof(y.c_str());
-				}
-
-				position = glm::vec2(posX, posY);
-
-				canvas2D->setPositionXY(position);
-
-				if (line.StartsWith("Rotation:"))
-				{
-					std::string myRot = line.Remove(0, 10);
-
-					float valueRot = ::atof(myRot.c_str());
-
-					canvas2D->setRotation(valueRot);
-				}
-			}
-
 			canvas2D->SetLabel(OpenDialog.GetFilename());			
 			canvas2Ds.push_back(canvas2D);
 
 			canvas2D->SetFocus();
+
+			std::string path = OpenDialog.GetPath();
+
+			GameObject2D::gameObject test;
+
+			fstream file;
+
+			int objCount = 0;
+
+			file.open(path.c_str(), ios::binary | ios::in);
+
+			if (!file.is_open())
+			{
+				cout << "Could not open file!" << endl;
+			}
+
+			file.seekg(0, ios::beg);
+
+			while (file.good())
+			{
+				file.read((char *)&test, sizeof(GameObject2D::gameObject));
+
+				GameObject2D *go2D = new GameObject2D(test.m_filepath);
+				GameObject2D::gameObject *gameObj = new GameObject2D::gameObject();
+
+				gameObj->setPath(test.m_filepath);
+				gameObj->setName(test.m_name);
+				gameObj->setPosition(test.m_positionXY);
+				gameObj->setRotation(test.m_rotationXY);
+				gameObj->setScale(test.m_scaleXYZ);
+
+				go2D->setName(test.m_name);
+				go2D->setPosition(test.m_positionXY);
+				go2D->setRotation(test.m_rotationXY);
+				go2D->setScale(test.m_scaleXYZ);
+
+				gameObjects2D.push_back(gameObj);
+
+				canvas2D->addGameObject(go2D);
+				objCount++;
+			}
+			file.close();
+
+			gameObjects2D.resize(objCount - 1);
+			canvas2D->resizeGameObjects(objCount - 1);
 			
 			dirPath = OpenDialog.GetDirectory();
 		}
@@ -773,10 +763,6 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 
 					if (m_auinotebook1->GetPageText(current_page_index) == newLabel)
 					{
-						wxTextFile file(dirPath + "\\" + current_label);
-
-						int lineCount = file.GetLineCount();
-
 						for (std::vector<Viewport3D *>::iterator iter = canvas3Ds.begin(); iter != canvas3Ds.end(); ++iter)
 						{
 							if (current_label == (*iter)->GetLabel())
@@ -791,7 +777,7 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 								}
 								else
 								{
-									for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
+									for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects3D.begin(); goIter != gameObjects3D.end(); goIter++)
 									{
 										GameObject3D::gameObject *gos;
 										gos = (*goIter);
@@ -810,6 +796,37 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 				}
 				else if (SaveDialog.GetPath().EndsWith(".2ds"))
 				{
+					wxString newLabel = current_label;
+
+					if (m_auinotebook1->GetPageText(current_page_index) == newLabel)
+					{
+						for (std::vector<Viewport2D *>::iterator iter = canvas2Ds.begin(); iter != canvas2Ds.end(); ++iter)
+						{
+							if (current_label == (*iter)->GetLabel())
+							{
+								std::string path = SaveDialog.GetPath();
+
+								fstream file(path, ios::binary | ios::out | ios::trunc);
+
+								if (!file.is_open())
+								{
+									cout << "error opening file!" << endl;
+								}
+								else
+								{
+									for (std::vector<GameObject2D::gameObject *>::iterator goIter = gameObjects2D.begin(); goIter != gameObjects2D.end(); goIter++)
+									{
+										GameObject2D::gameObject *gos;
+										gos = (*goIter);
+
+										file.write((char *)gos, sizeof(GameObject2D::gameObject));
+									}
+								}
+								file.close();
+							}
+						}
+						m_auinotebook1->SetPageText(current_page_index, current_label);
+					}
 				}
 			}
 		}
@@ -825,26 +842,29 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 			{
 				if (m_auinotebook1->GetPageText(current_page_index) != "3D Scene" || !m_auinotebook1->GetPageText(current_page_index).EndsWith(".3ds"))
 				{
-					wxTextFile file(dirPath + "\\" + current_label);
-
-					int lineCount = file.GetLineCount();
-
 					for (std::vector<Viewport2D *>::iterator iter = canvas2Ds.begin(); iter != canvas2Ds.end(); ++iter)
 					{
 						if (current_label == (*iter)->GetLabel())
 						{
-							for (int i = 0; i < lineCount; i++)
+							std::string path = SaveDialog.GetPath();
+
+							fstream file(path, ios::binary | ios::out | ios::trunc);
+
+							if (!file.is_open())
 							{
-								file.RemoveLine(i);
+								cout << "error opening file!" << endl;
 							}
+							else
+							{
+								for (std::vector<GameObject2D::gameObject *>::iterator goIter = gameObjects2D.begin(); goIter != gameObjects2D.end(); goIter++)
+								{
+									GameObject2D::gameObject *gos;
+									gos = (*goIter);
 
-							file.AddLine((*iter)->getPositionX());
-							file.AddLine((*iter)->getPositionY());
-							file.AddLine((*iter)->getRotation());
-
-							file.Write();
-
-							file.Close();
+									file.write((char *)gos, sizeof(GameObject2D::gameObject));
+								}
+							}
+							file.close();
 						}
 					}
 
@@ -860,10 +880,6 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 
 					if (m_auinotebook1->GetPageText(current_page_index) == newLabel)
 					{
-						wxTextFile file(dirPath + "\\" + current_label);
-
-						int lineCount = file.GetLineCount();
-
 						for (std::vector<Viewport3D *>::iterator iter = canvas3Ds.begin(); iter != canvas3Ds.end(); ++iter)
 						{
 							if (current_label == (*iter)->GetLabel())
@@ -878,7 +894,7 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 								}
 								else
 								{
-									for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
+									for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects3D.begin(); goIter != gameObjects3D.end(); goIter++)
 									{
 										GameObject3D::gameObject *gos;
 										gos = (*goIter);
@@ -903,19 +919,29 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 			{
 				if (SaveDialog.GetPath().EndsWith(".2ds"))
 				{
-					wxTextFile file(SaveDialog.GetPath());
-
 					for (std::vector<Viewport2D *>::iterator iter = canvas2Ds.begin(); iter != canvas2Ds.end(); ++iter)
 					{
 						if (current_label == (*iter)->GetLabel())
 						{
-							file.AddLine((*iter)->getPositionX());
-							file.AddLine((*iter)->getPositionY());
-							file.AddLine((*iter)->getRotation());
+							std::string path = SaveDialog.GetPath();
 
-							file.Write();
+							fstream file(path, ios::binary | ios::out | ios::trunc);
 
-							file.Close();
+							if (!file.is_open())
+							{
+								cout << "error opening file!" << endl;
+							}
+							else
+							{
+								for (std::vector<GameObject2D::gameObject *>::iterator goIter = gameObjects2D.begin(); goIter != gameObjects2D.end(); goIter++)
+								{
+									GameObject2D::gameObject *gos;
+									gos = (*goIter);
+
+									file.write((char *)gos, sizeof(GameObject2D::gameObject));
+								}
+							}
+							file.close();
 						}
 					}
 
@@ -927,8 +953,6 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 
 				if (SaveDialog.GetPath().EndsWith(".3ds"))
 				{
-					wxTextFile file(SaveDialog.GetPath());
-
 					for (std::vector<Viewport3D *>::iterator iter = canvas3Ds.begin(); iter != canvas3Ds.end(); ++iter)
 					{
 						if (current_label == (*iter)->GetLabel())
@@ -943,7 +967,7 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 							}
 							else
 							{
-								for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
+								for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects3D.begin(); goIter != gameObjects3D.end(); goIter++)
 								{
 									GameObject3D::gameObject *gos;
 									gos = (*goIter);
@@ -1011,7 +1035,7 @@ void MyFrame1::SaveFileAs(wxCommandEvent& WXUNUSED(event))
 							}
 							else
 							{
-								for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
+								for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects3D.begin(); goIter != gameObjects3D.end(); goIter++)
 								{
 									GameObject3D::gameObject *gos;
 									gos = (*goIter);
@@ -1030,6 +1054,38 @@ void MyFrame1::SaveFileAs(wxCommandEvent& WXUNUSED(event))
 			}
 			else if (SaveDialog.GetPath().EndsWith(".2ds"))
 			{
+				wxString newLabel = current_label;
+
+				if (m_auinotebook1->GetPageText(current_page_index) == newLabel)
+				{
+					for (std::vector<Viewport2D *>::iterator iter = canvas2Ds.begin(); iter != canvas2Ds.end(); ++iter)
+					{
+						if (current_label == (*iter)->GetLabel())
+						{
+							std::string path = SaveDialog.GetPath();
+
+							fstream file(path, ios::binary | ios::out | ios::trunc);
+
+							if (!file.is_open())
+							{
+								cout << "error opening file!" << endl;
+							}
+							else
+							{
+								for (std::vector<GameObject2D::gameObject *>::iterator goIter = gameObjects2D.begin(); goIter != gameObjects2D.end(); goIter++)
+								{
+									GameObject2D::gameObject *gos;
+									gos = (*goIter);
+
+									file.write((char *)gos, sizeof(GameObject2D::gameObject));
+								}
+							}
+
+							file.close();
+						}
+					}
+					m_auinotebook1->SetPageText(current_page_index, current_label);
+				}
 			}
 
 			dirPath = SaveDialog.GetDirectory();
@@ -1050,27 +1106,36 @@ void MyFrame1::SaveFileAs(wxCommandEvent& WXUNUSED(event))
 
 			if (SaveDialog.GetPath().EndsWith(".2ds"))
 			{			
-				wxTextFile file(SaveDialog.GetPath());
-
 				for (std::vector<Viewport2D *>::iterator iter = canvas2Ds.begin(); iter != canvas2Ds.end(); ++iter)
 				{
 					if (current_label == (*iter)->GetLabel())
 					{
-						file.AddLine((*iter)->getPositionX());
-						file.AddLine((*iter)->getPositionY());
-						file.AddLine((*iter)->getRotation());
+						std::string path = SaveDialog.GetPath();
 
-						file.Write();
+						fstream file(path, ios::binary | ios::out | ios::trunc);
 
-						file.Close();
+						if (!file.is_open())
+						{
+							cout << "error opening file!" << endl;
+						}
+						else
+						{
+							for (std::vector<GameObject2D::gameObject *>::iterator goIter = gameObjects2D.begin(); goIter != gameObjects2D.end(); goIter++)
+							{
+								GameObject2D::gameObject *gos;
+								gos = (*goIter);
+
+								file.write((char *)gos, sizeof(GameObject2D::gameObject));
+							}
+						}
+
+						file.close();
 					}
 				}
 			}
 
 			if (SaveDialog.GetPath().EndsWith(".3ds"))
 			{
-				wxTextFile file(SaveDialog.GetPath());
-
 				for (std::vector<Viewport3D *>::iterator iter = canvas3Ds.begin(); iter != canvas3Ds.end(); ++iter)
 				{
 					if (current_label == (*iter)->GetLabel())
@@ -1085,7 +1150,7 @@ void MyFrame1::SaveFileAs(wxCommandEvent& WXUNUSED(event))
 						}
 						else
 						{
-							for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects.begin(); goIter != gameObjects.end(); goIter++)
+							for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects3D.begin(); goIter != gameObjects3D.end(); goIter++)
 							{
 								GameObject3D::gameObject *gos;
 								gos = (*goIter);
@@ -1147,7 +1212,7 @@ void MyFrame1::Import(wxCommandEvent& WXUNUSED(event))
 					model->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 					model->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
 
-					gameObjects.push_back(gameObj);
+					gameObjects3D.push_back(gameObj);
 
 					(*iter)->addGameObject(model);
 				}

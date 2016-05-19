@@ -156,7 +156,8 @@ private:
 	GameObject3D go3D;
 	GameObject3D::gameObject go;
 
-	std::vector<GameObject3D::gameObject *> gameObjects;
+	std::vector<GameObject2D::gameObject *> gameObjects2D;
+	std::vector<GameObject3D::gameObject *> gameObjects3D;
 
 	//MusicPlayer musicPlayer;
 

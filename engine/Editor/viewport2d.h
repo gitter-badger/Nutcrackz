@@ -26,6 +26,8 @@
 //#include <fstream>
 #include <string>
 
+#include "gameobject.h"
+
 const int NO_BOX = -1;
 const int NO_LIGHT = -1;
 
@@ -93,6 +95,8 @@ public:
 	void setPositionXY(glm::vec2 newPos) { position = newPos; }
 	void setRotation(float newRot) { rotate = newRot; }
 	void setScale(float newScale) { scale = newScale; }
+	void resizeGameObjects(int value) { gameObjects.resize(value); }
+	void addGameObject(GameObject2D *go) { gameObjects.push_back(go); hasGameObjects = true; }
 
 	// events
 	void OnIdle(wxIdleEvent &evnt);
@@ -190,6 +194,8 @@ private:
 	bool InitGL;
 	SDL_Event evnt;
 	wxStyledTextCtrl *m_output;
+	bool hasGameObjects = false;
+	std::vector<GameObject2D*> gameObjects;
 
 private:
 	bool model2DSelected;

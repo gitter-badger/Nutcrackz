@@ -338,10 +338,10 @@ void Viewport2D::OnMouseMoved(wxMouseEvent& event)
 			//wxString myX = std::to_string(mousePos.x);
 			//wxString myY = std::to_string(mousePos.y);
 
-			wxString myX = std::to_string(mousePosRel.x);
-			wxString myY = std::to_string(mousePosRel.y);
+			//wxString myX = std::to_string(mousePosRel.x);
+			//wxString myY = std::to_string(mousePosRel.y);
 			
-			message(*m_output, "mouse pos is currently =" + myX + ", " + myY + "!");
+			//message(*m_output, "mouse pos is currently =" + myX + ", " + myY + "!");
 				//m_camera.offsetPosition(glm::vec2(-mouseX, mouseY /** m_camera.getAspectRatio()*/) * SPEED);
 		}
 
@@ -432,7 +432,7 @@ void Viewport2D::OnMouseDown(wxMouseEvent& event)
 
 			m_mouseButtons[MOUSE_LEFT] = true;
 
-			message(*m_output, "Left mouse button is currently being clicked!");
+			//message(*m_output, "Left mouse button is currently being clicked!");
 
 			// Don't place objects or select things when clicking on UI.
 			//if (isMouseInUI()) break;
@@ -697,7 +697,7 @@ void Viewport2D::OnMouseWheelMoved(wxMouseEvent& event)
 
 					wxString myString = std::to_string(offset);
 
-					message(*m_output, "mouse wheel is currently +=" + myString + "!");
+					//message(*m_output, "mouse wheel is currently +=" + myString + "!");
 			}
 			else if (scrollDown)
 			{
@@ -707,7 +707,7 @@ void Viewport2D::OnMouseWheelMoved(wxMouseEvent& event)
 
 					wxString myString = std::to_string(offset);
 
-					message(*m_output, "mouse wheel is currently -=" + myString + "!");
+					//message(*m_output, "mouse wheel is currently -=" + myString + "!");
 			}
 		}
 	}
@@ -743,7 +743,7 @@ void Viewport2D::OnRightClick(wxMouseEvent& event)
 
 		m_mouseButtons[MOUSE_RIGHT] = true;
 
-		message(*m_output, "Right mouse button is currently being clicked!");
+		//message(*m_output, "Right mouse button is currently being clicked!");
 	}
 
 	SetFocus();
