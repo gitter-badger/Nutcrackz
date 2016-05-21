@@ -410,14 +410,31 @@ void MyFrame1::OnNewDlg(wxCommandEvent& event)
 
 			if (canvas3Ds.size() == 1)
 			{
-				wxPGProperty* positionProp = m_propertyGrid1->Append(new wxPropertyCategory("Transform"));
 
-				wxPGProperty* x = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("X: ",
-					wxPG_LABEL, atof(canvas3D->getPositionX())));
-				wxPGProperty* y = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("Y: ",
-					wxPG_LABEL, atof(canvas3D->getPositionY())));
-				wxPGProperty* z = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("Z: ",
-					wxPG_LABEL, atof(canvas3D->getPositionZ())));
+				wxPGProperty* positionProp = m_propertyGrid1->Append(new wxPropertyCategory("Transform"));
+				wxPGProperty* rotationProp = m_propertyGrid1->Append(new wxPropertyCategory("Rotation"));
+				wxPGProperty* scalingProp = m_propertyGrid1->Append(new wxPropertyCategory("Scaling"));
+
+				objectPositionX = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("X: ",
+					wxPG_LABEL, atof(/*canvas3D->getPositionX()*/std::to_string(0.0f).c_str())));
+				objectPositionY = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("Y: ",
+					wxPG_LABEL, atof(/*canvas3D->getPositionY()*/std::to_string(0.0f).c_str())));
+				objectPositionZ = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("Z: ",
+					wxPG_LABEL, atof(/*canvas3D->getPositionZ()*/std::to_string(0.0f).c_str())));
+
+				objectRotationX = m_propertyGrid1->Insert(rotationProp, new wxFloatProperty("X: ",
+					wxPG_LABEL, atof(std::to_string(0.0f).c_str())));
+				objectRotationY = m_propertyGrid1->Insert(rotationProp, new wxFloatProperty("Y: ",
+					wxPG_LABEL, atof(std::to_string(0.0f).c_str())));
+				objectRotationZ = m_propertyGrid1->Insert(rotationProp, new wxFloatProperty("Z: ",
+					wxPG_LABEL, atof(std::to_string(0.0f).c_str())));
+
+				objectScalingX = m_propertyGrid1->Insert(scalingProp, new wxFloatProperty("X: ",
+					wxPG_LABEL, atof(std::to_string(1.0f).c_str())));
+				objectScalingY = m_propertyGrid1->Insert(scalingProp, new wxFloatProperty("Y: ",
+					wxPG_LABEL, atof(std::to_string(1.0f).c_str())));
+				objectScalingZ = m_propertyGrid1->Insert(scalingProp, new wxFloatProperty("Z: ",
+					wxPG_LABEL, atof(std::to_string(1.0f).c_str())));
 
 				wxPGProperty* lightProp = m_propertyGrid1->Append(new wxPropertyCategory("Directional Light"));
 
@@ -428,6 +445,10 @@ void MyFrame1::OnNewDlg(wxCommandEvent& event)
 					wxPG_LABEL, canvas3D->getDiffuseIntensity()));
 			}
 			canvas3DCounter++;
+
+			//float fl = 1.575f;
+
+			//wxLogMessage("go = %f", abs(45.0f / fl));//.getName());
 		}
 	}
 
@@ -436,10 +457,23 @@ void MyFrame1::OnNewDlg(wxCommandEvent& event)
 
 void MyFrame1::OnPropertyGridChange(wxPropertyGridEvent& event)
 {
+	curr_page = m_auinotebook1->GetCurrentPage();
+	curr_page_index = m_auinotebook1->GetPageIndex(curr_page);
+	curr_label = m_auinotebook1->GetPageText(curr_page_index);
+
 	for (std::vector<Viewport3D *>::iterator iter = canvas3Ds.begin(); iter != canvas3Ds.end(); ++iter)
 	{
-		(*iter)->setAmbientIntensity(getAmbientLight());
-		(*iter)->setDiffuseIntensity(getDiffuseLight());
+		if (curr_label == (*iter)->GetLabel())
+		{
+			//wxLogMessage("Viewport3D name = %s, %s", (*iter)->GetLabel(), curr_label);
+			//wxLogMessage("gameObjects in scene = %s", std::to_string(gameObjects3D.size()));
+			(*iter)->moveGameObject3D(glm::vec3(getPositionX(), getPositionY(), getPositionZ()));
+			(*iter)->rotateGameObject3D(glm::vec3(getRotationX(), getRotationY(), getRotationZ()));
+			(*iter)->scaleGameObject3D(glm::vec3(getScalingX(), getScalingY(), getScalingZ()));
+
+			(*iter)->setAmbientIntensity(getAmbientLight());
+			(*iter)->setDiffuseIntensity(getDiffuseLight());
+		}
 	}
 }
 
@@ -531,7 +565,7 @@ void MyFrame1::OpenFile(wxCommandEvent& WXUNUSED(event))
 
 			m_auinotebook1->AddPage(tmpPanel, OpenDialog.GetFilename(), true, wxNullBitmap);
 			
-			//tmpScintilla->SetCaretLineVisibleAlways(true);
+			//tmpScintilla->SetCaretLineVisibleAlways(true); //Only works in wxWidgets 3.1.x and above! We're using wxWidgets 3.0.2!
 
 			CurrentDocPath = OpenDialog.GetPath();
 
@@ -568,9 +602,7 @@ void MyFrame1::OpenFile(wxCommandEvent& WXUNUSED(event))
 			canvas3D->SetFocus();
 
 			std::string path = OpenDialog.GetPath();
-
-			GameObject3D::gameObject test;
-
+			
 			fstream file;
 
 			int objCount = 0;
@@ -586,31 +618,52 @@ void MyFrame1::OpenFile(wxCommandEvent& WXUNUSED(event))
 
 			while (file.good())
 			{
-				file.read((char *)&test, sizeof(GameObject3D::gameObject));
+				file.read((char *)&tempGO, sizeof(GameObject3D::gameObject));
 
-				GameObject3D *go3D = new GameObject3D(test.m_filepath);
+				GameObject3D *go3D = new GameObject3D(tempGO.m_filepath);
 				GameObject3D::gameObject *gameObj = new GameObject3D::gameObject();
 
-				gameObj->setPath(test.m_filepath);
-				gameObj->setName(test.m_name);
-				gameObj->setPosition(test.m_positionXYZ);
-				gameObj->setRotation(test.m_rotationXYZ);
-				gameObj->setScale(test.m_scaleXYZ);
+				gameObj->setPath(tempGO.m_filepath);
+				gameObj->setName(tempGO.m_name);
+				gameObj->setPosition(tempGO.m_positionXYZ);
+				gameObj->setRotation(tempGO.getRotation());
+				gameObj->setScale(tempGO.m_scaleXYZ);
 
-				go3D->setName(test.m_name);
-				go3D->setPosition(test.m_positionXYZ);
-				go3D->setRotation(test.m_rotationXYZ);
-				go3D->setScale(test.m_scaleXYZ);
+				go3D->setName(tempGO.m_name);
+				go3D->setPosition(tempGO.m_positionXYZ);
+				go3D->setRotation(tempGO.getRotation());
+				go3D->setScale(tempGO.m_scaleXYZ);
+
+				go3D->go = *gameObj;
 
 				gameObjects3D.push_back(gameObj);
+				gameObjects.push_back(go3D);
 
+				canvas3D->addGameObject3D(gameObj);
 				canvas3D->addGameObject(go3D);
+
 				objCount++;
+
+				//wxLogMessage("go = %f, %f, %f", go3D->go.getPosition().x, go3D->go.getPosition().y, go3D->go.getPosition().z);//.getName());
 			}
 			file.close();
 
 			gameObjects3D.resize(objCount - 1);
+			gameObjects.resize(objCount - 1);
+			canvas3D->resizeGameObjects3D(objCount - 1);
 			canvas3D->resizeGameObjects(objCount - 1);
+
+			//wxLogMessage("go = %s", canvas3D->getMyGameObjects().at(0)->getGameObject().getName());
+
+
+			/*for (std::vector<Viewport3D *>::iterator iter = canvas3Ds.begin(); iter != canvas3Ds.end(); ++iter)
+			{
+				for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects3D.begin(); goIter != gameObjects3D.end(); ++goIter)
+				{
+					//(*goIter)->setPosition(glm::vec3(getPositionX(), getPositionY(), getPositionZ()));
+					(*iter)->setPositionXYZ((*goIter)->getPosition());
+				}
+			}*/
 
 			/*ostringstream oss;
 			oss << canvas3D->getMyGameObjects().size();//gameObjects.size();
@@ -620,16 +673,47 @@ void MyFrame1::OpenFile(wxCommandEvent& WXUNUSED(event))
 
 			canvas3D->setOutput(*m_scintilla1);
 
-			/*if (canvas3Ds.size() == 1)
+			if (canvas3Ds.size() == 1)
 			{
 				wxPGProperty* positionProp = m_propertyGrid1->Append(new wxPropertyCategory("Transform"));
+				wxPGProperty* rotationProp = m_propertyGrid1->Append(new wxPropertyCategory("Rotation"));
+				wxPGProperty* scalingProp = m_propertyGrid1->Append(new wxPropertyCategory("Scaling"));
 
-				wxPGProperty* x = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("X: ",
-					wxPG_LABEL, atof(canvas3D->getPositionX())));
-				wxPGProperty* y = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("Y: ",
-					wxPG_LABEL, atof(canvas3D->getPositionY())));
-				wxPGProperty* z = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("Z: ",
-					wxPG_LABEL, atof(canvas3D->getPositionZ())));
+				//for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects3D.begin(); goIter != gameObjects3D.end(); ++goIter)
+				//{
+					/*if (gameObjects3D.size() > 1 || gameObjects3D.size() == 0)
+					{
+						objectPositionX = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("X: ",
+							wxPG_LABEL, atof(canvas3D->getPositionX())));
+						objectPositionY = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("Y: ",
+							wxPG_LABEL, atof(canvas3D->getPositionY())));
+						objectPositionZ = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("Z: ",
+							wxPG_LABEL, atof(canvas3D->getPositionZ())));
+					}
+					else if (gameObjects3D.size() == 1)
+					{*/
+						objectPositionX = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("X: ",
+							wxPG_LABEL, atof(std::to_string(/*(*goIter)->getPosition().x*/0.0f).c_str())));
+						objectPositionY = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("Y: ",
+							wxPG_LABEL, atof(std::to_string(/*(*goIter)->getPosition().y*/0.0f).c_str())));
+						objectPositionZ = m_propertyGrid1->Insert(positionProp, new wxFloatProperty("Z: ",
+							wxPG_LABEL, atof(std::to_string(/*(*goIter)->getPosition().z*/0.0f).c_str())));
+
+						objectRotationX = m_propertyGrid1->Insert(rotationProp, new wxFloatProperty("X: ",
+							wxPG_LABEL, atof(std::to_string(/*(*goIter)->getPosition().x*/0.0f).c_str())));
+						objectRotationY = m_propertyGrid1->Insert(rotationProp, new wxFloatProperty("Y: ",
+							wxPG_LABEL, atof(std::to_string(/*(*goIter)->getPosition().y*/0.0f).c_str())));
+						objectRotationZ = m_propertyGrid1->Insert(rotationProp, new wxFloatProperty("Z: ",
+							wxPG_LABEL, atof(std::to_string(/*(*goIter)->getPosition().z*/0.0f).c_str())));
+
+						objectScalingX = m_propertyGrid1->Insert(scalingProp, new wxFloatProperty("X: ",
+							wxPG_LABEL, atof(std::to_string(/*(*goIter)->getPosition().x*/1.0f).c_str())));
+						objectScalingY = m_propertyGrid1->Insert(scalingProp, new wxFloatProperty("Y: ",
+							wxPG_LABEL, atof(std::to_string(/*(*goIter)->getPosition().y*/1.0f).c_str())));
+						objectScalingZ = m_propertyGrid1->Insert(scalingProp, new wxFloatProperty("Z: ",
+							wxPG_LABEL, atof(std::to_string(/*(*goIter)->getPosition().z*/1.0f).c_str())));
+					//}
+				//}
 
 				wxPGProperty* lightProp = m_propertyGrid1->Append(new wxPropertyCategory("Directional Light"));
 
@@ -641,7 +725,7 @@ void MyFrame1::OpenFile(wxCommandEvent& WXUNUSED(event))
 
 				//if (canvas3D->hasOutput())
 				//m_scintilla1->AppendText("3D viewport just got this output!");
-			}*/
+			}
 		}
 		else if (OpenDialog.GetPath().EndsWith(".2ds"))
 		{
@@ -725,7 +809,7 @@ void MyFrame1::SaveFile(wxCommandEvent& WXUNUSED(event))
 	wxWindow *current_page = m_auinotebook1->GetCurrentPage();
 	int current_page_index = m_auinotebook1->GetPageIndex(current_page);
 	wxString current_label = m_auinotebook1->GetPageText(current_page_index);
-
+	
 	if (current_label.EndsWith(" *"))
 	{
 		if (dirPath != "" && m_auinotebook1->GetPageText(current_page_index) != "Lua Script" && m_auinotebook1->GetPageText(current_page_index) != "Lua Script *" && m_auinotebook1->GetPageText(current_page_index).Contains(".lua"))
@@ -1150,13 +1234,22 @@ void MyFrame1::SaveFileAs(wxCommandEvent& WXUNUSED(event))
 						}
 						else
 						{
-							for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects3D.begin(); goIter != gameObjects3D.end(); goIter++)
+							for (int i = 0; i < (*iter)->getMyGameObjects().size(); i++)
+							{
+								GameObject3D::gameObject *gos;
+								gos = &(*iter)->getMyGameObjects()[i]->go;
+
+								file.write((char *)gos, sizeof(GameObject3D::gameObject));
+							}
+
+							//for (std::vector<GameObject3D::gameObject *>::iterator goIter = gameObjects3D.begin(); goIter != gameObjects3D.end(); goIter++)
+							/*for (std::vector<GameObject3D::gameObject *>::iterator goIter = (*iter)->getMy3DGameObjects().begin(); goIter != (*iter)->getMy3DGameObjects().end(); goIter++)
 							{
 								GameObject3D::gameObject *gos;
 								gos = (*goIter);
 
 								file.write((char *)gos, sizeof(GameObject3D::gameObject));
-							}
+							}*/
 						}
 
 						file.close();
@@ -1207,13 +1300,15 @@ void MyFrame1::Import(wxCommandEvent& WXUNUSED(event))
 					gameObj->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
 					gameObj->setNewLine("\n");
 					
-					model->setName(name);
+					model->setName((char*)name.c_str());
 					model->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 					model->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 					model->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
 
 					gameObjects3D.push_back(gameObj);
+					gameObjects.push_back(model);
 
+					(*iter)->addGameObject3D(gameObj);
 					(*iter)->addGameObject(model);
 				}
 			}
@@ -1223,12 +1318,13 @@ void MyFrame1::Import(wxCommandEvent& WXUNUSED(event))
 			std::string path = OpenDialog.GetPath();
 			std::string name = OpenDialog.GetFilename();
 
-			GameObject3D *model = new GameObject3D(path);
-
 			for (std::vector<Viewport3D *>::iterator iter = canvas3Ds.begin(); iter != canvas3Ds.end(); ++iter)
 			{
 				if (current_label == (*iter)->GetLabel())
 				{
+					GameObject3D *model = new GameObject3D(path);
+					GameObject3D::gameObject *gameObj = new GameObject3D::gameObject();
+
 					name.resize(name.length() - 4);
 
 					go.setName((char*)name.c_str());
@@ -1237,6 +1333,7 @@ void MyFrame1::Import(wxCommandEvent& WXUNUSED(event))
 					go3D.setScale(glm::vec3(1.0f, 1.0f, 1.0f));
 
 					(*iter)->addGameObject(model);
+					(*iter)->addGameObject3D(gameObj);
 				}
 			}
 		}
@@ -1245,12 +1342,13 @@ void MyFrame1::Import(wxCommandEvent& WXUNUSED(event))
 			std::string path = OpenDialog.GetPath();
 			std::string name = OpenDialog.GetFilename();
 
-			GameObject3D *model = new GameObject3D(path);
-
 			for (std::vector<Viewport3D *>::iterator iter = canvas3Ds.begin(); iter != canvas3Ds.end(); ++iter)
 			{
 				if (current_label == (*iter)->GetLabel())
 				{
+					GameObject3D *model = new GameObject3D(path);
+					GameObject3D::gameObject *gameObj = new GameObject3D::gameObject();
+
 					name.resize(name.length() - 4);
 
 					go.setName((char*)name.c_str());
@@ -1259,6 +1357,7 @@ void MyFrame1::Import(wxCommandEvent& WXUNUSED(event))
 					go3D.setScale(glm::vec3(1.0f, 1.0f, 1.0f));
 
 					(*iter)->addGameObject(model);
+					(*iter)->addGameObject3D(gameObj);
 				}
 			}
 		}
@@ -1267,12 +1366,13 @@ void MyFrame1::Import(wxCommandEvent& WXUNUSED(event))
 			std::string path = OpenDialog.GetPath();
 			std::string name = OpenDialog.GetFilename();
 
-			GameObject3D *model = new GameObject3D(path);
-
 			for (std::vector<Viewport3D *>::iterator iter = canvas3Ds.begin(); iter != canvas3Ds.end(); ++iter)
 			{
 				if (current_label == (*iter)->GetLabel())
 				{
+					GameObject3D *model = new GameObject3D(path);
+					GameObject3D::gameObject *gameObj = new GameObject3D::gameObject();
+
 					name.resize(name.length() - 4);
 
 					go.setName((char*)name.c_str());
@@ -1281,6 +1381,7 @@ void MyFrame1::Import(wxCommandEvent& WXUNUSED(event))
 					go3D.setScale(glm::vec3(1.0f, 1.0f, 1.0f));
 
 					(*iter)->addGameObject(model);
+					(*iter)->addGameObject3D(gameObj);
 				}
 			}
 		}

@@ -78,12 +78,7 @@ public:
 	void OnPropertyGridChange(wxPropertyGridEvent& event);
 	void OnClose(wxCloseEvent& event);
 
-	//Events
-	//void OnKeyDown(wxKeyEvent &event);
-	//void OnKeyUp(wxKeyEvent &event);
-
 	//Getters
-	//InputManager getInput() { return m_input; }
 	wxPropertyGrid * getPropertyGrid() { return m_propertyGrid1; }
 	Viewport2D *getCanvas2D() { return canvas2D; }
 	Viewport3D *getCanvas3D() { return canvas3D; }
@@ -126,19 +121,30 @@ protected:
 	Viewport2D *canvas2D;
 	Viewport3D *canvas3D;
 
+	void setPositionX() { objectPositionX->SetValue(0.0f); }
+	void setPositionY() { objectPositionY->SetValue(0.0f); }
+	void setPositionZ() { objectPositionZ->SetValue(0.0f); }
+	float getPositionX() { varPosX = objectPositionX->GetValue(); wxString var = varPosX; return atof(var); }
+	float getPositionY() { varPosY = objectPositionY->GetValue(); wxString var = varPosY; return atof(var); }
+	float getPositionZ() { varPosZ = objectPositionZ->GetValue(); wxString var = varPosZ; return atof(var); }
+
+	float getRotationX() { varRotX = objectRotationX->GetValue(); wxString var = varRotX; return atof(var); }
+	float getRotationY() { varRotY = objectRotationY->GetValue(); wxString var = varRotY; return atof(var); }
+	float getRotationZ() { varRotZ = objectRotationZ->GetValue(); wxString var = varRotZ; return atof(var); }
+
+	float getScalingX() { varSclX = objectScalingX->GetValue(); wxString var = varSclX; return atof(var); }
+	float getScalingY() { varSclY = objectScalingY->GetValue(); wxString var = varSclY; return atof(var); }
+	float getScalingZ() { varSclZ = objectScalingZ->GetValue(); wxString var = varSclZ; return atof(var); }
+
 	float getAmbientLight() { varAmbient = aLight->GetValue(); wxString var = varAmbient; return atof(var); }
 	float getDiffuseLight() { varDiffuse = dLight->GetValue(); wxString var = varDiffuse; return atof(var); }
 
-	// Virtual event handlers, overide them in your derived class
-	//virtual void onCreate2DScene(wxCommandEvent& event);
-	//virtual void onCreate3DSCene(wxCommandEvent& event);
-	//virtual void onCreateScript(wxCommandEvent& event);
 	virtual void OnNewDlg(wxCommandEvent& event);
 
 private:
-	//std::vector<wxStyledTextCtrl *> stcs;
 	std::vector<Viewport2D *> canvas2Ds;
 	std::vector<Viewport3D *> canvas3Ds;
+
 	bool keys[500];
 	bool hasOpenedFile;
 	bool hasSavedFile;
@@ -146,26 +152,50 @@ private:
 	
 	int canvas2DCounter = 1;
 	int canvas3DCounter = 1;
-	//int numberOfGOS = 0;
+
+	wxPGProperty* objectPositionX;
+	wxPGProperty* objectPositionY;
+	wxPGProperty* objectPositionZ;
+
+	wxPGProperty* objectRotationX;
+	wxPGProperty* objectRotationY;
+	wxPGProperty* objectRotationZ;
+
+	wxPGProperty* objectScalingX;
+	wxPGProperty* objectScalingY;
+	wxPGProperty* objectScalingZ;
 
 	wxPGProperty* aLight;
 	wxPGProperty* dLight;
+	
+	wxVariant varPosX;
+	wxVariant varPosY;
+	wxVariant varPosZ;
+
+	wxVariant varRotX;
+	wxVariant varRotY;
+	wxVariant varRotZ;
+
+	wxVariant varSclX;
+	wxVariant varSclY;
+	wxVariant varSclZ;
+
 	wxVariant varAmbient;
 	wxVariant varDiffuse;
 	
 	GameObject3D go3D;
 	GameObject3D::gameObject go;
+	GameObject3D::gameObject tempGO;
 
+	std::vector<GameObject3D *> gameObjects;
 	std::vector<GameObject2D::gameObject *> gameObjects2D;
 	std::vector<GameObject3D::gameObject *> gameObjects3D;
 
-	//MusicPlayer musicPlayer;
+	wxWindow *curr_page;
+	int curr_page_index;
+	wxString curr_label;
 
 	char *input;
-
-	//InputManager m_input;
-
-	//AudioPlayerDlg *playerDlg = new AudioPlayerDlg(NULL, wxID_ANY);
 
 	wxString dirPath;
 

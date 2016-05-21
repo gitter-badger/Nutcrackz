@@ -35,7 +35,6 @@ public:
 	void OnClose(wxCloseEvent& event);
 
 	// Virtual event handlers, overide them in your derived class
-	//virtual void Import(wxCommandEvent& event) { event.Skip(); }
 	virtual void Import(wxCommandEvent& event);
 	virtual void Play(wxCommandEvent& event);
 	virtual void Pause(wxCommandEvent& event);

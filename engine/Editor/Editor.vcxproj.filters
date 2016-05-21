@@ -111,9 +111,6 @@
     <ClCompile Include="audiodlg.cpp">
       <Filter>Main Files</Filter>
     </ClCompile>
-    <ClCompile Include="rwtobinary.cpp">
-      <Filter>Common Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gltexture.h">
@@ -250,9 +247,6 @@
     </ClInclude>
     <ClInclude Include="musicplayer.h">
       <Filter>3D</Filter>
-    </ClInclude>
-    <ClInclude Include="rwtobinary.h">
-      <Filter>Common Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

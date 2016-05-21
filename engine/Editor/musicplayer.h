@@ -16,7 +16,7 @@ public:
 	void PlayMusic() { if (hasInitialized) { music.play(-1); } }
 	void PauseMusic() { if (hasInitialized) { music.pause(); } }
 	void ResumeMusic() { if (hasInitialized) { music.resume(); } }
-	void StopMusic() { if (hasInitialized) { music.stop(); /*aEngine.destroyMusic();*/ } }
+	void StopMusic() { if (hasInitialized) { music.stop(); } }
 
 	//Getters
 	bool hasLoadedSong() { return isSongLoaded; }

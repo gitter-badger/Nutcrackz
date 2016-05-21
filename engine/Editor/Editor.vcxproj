@@ -179,7 +179,6 @@
     <ClCompile Include="pipeline.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="resourcemanager.cpp" />
-    <ClCompile Include="rwtobinary.cpp" />
     <ClCompile Include="shaderprogram.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="spritebatch.cpp" />
@@ -221,7 +220,6 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="resourcemanager.h" />
-    <ClInclude Include="rwtobinary.h" />
     <ClInclude Include="shaderprogram.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="spritebatch.h" />

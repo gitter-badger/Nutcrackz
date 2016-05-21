@@ -19,7 +19,6 @@ EVT_MOUSEWHEEL(Viewport3D::OnMouseWheelMoved)
 EVT_ENTER_WINDOW(Viewport3D::OnMouseEvent)
 EVT_KEY_DOWN(Viewport3D::OnKeyDown)
 EVT_KEY_UP(Viewport3D::OnKeyUp)
-//EVT_TIMER(wxID_ANY, BasicGLPane::OnTimer)
 END_EVENT_TABLE()
 
 Viewport3D::Viewport3D(wxPanel* parent, int* args, long style) :
@@ -37,20 +36,12 @@ Viewport3D::Viewport3D(wxPanel* parent, int* args, long style) :
 	// To avoid flashing on MSW
 	SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 
-	//camera.init(getWidth(), getHeight());
 	camera.setPosition(glm::vec3(0.0f, 1.5f, 10.0f));
 	
 	aEngine.init();
 
-	//Music bgm = aEngine.loadMusic("Assets/Music/cmystery4.ogg");
-
-	//bgm.play();
-
 	m_ambientIntensity = 0.25f;
 	m_diffuseIntensity = 1.0f;
-
-	//m_pEffect.Init();
-	//picker = new Picking();
 
 	m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
 	m_directionalLight.AmbientIntensity = m_ambientIntensity;
@@ -62,27 +53,6 @@ Viewport3D::Viewport3D(wxPanel* parent, int* args, long style) :
 	m_persProjInfo.Width = getHeight();
 	m_persProjInfo.zNear = 0.1f;
 	m_persProjInfo.zFar = 1000.0f;
-
-	/*gameObjects.push_back(new GameObject3D("Models/nanosuit.obj"));
-	gameObjects[0]->setName("nanosuit");
-	gameObjects[0]->setPosition(glm::vec3(-4.5f, 0.0f, 0.0f));
-	gameObjects[0]->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
-	gameObjects[0]->setScale(glm::vec3(0.2f, 0.2f, 0.2f));
-
-	GameObject3D *model = new GameObject3D("Models/nanosuit.obj");
-
-	this->gameObjects.push_back(model);
-
-	model->setName("nanosuit");
-	model->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	model->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
-	model->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
-
-	gameObjects.push_back(new GameObject3D("Models/fence.obj"));
-	gameObjects[1]->setName("fence");
-	gameObjects[1]->setPosition(glm::vec3(4.5f, 0.0f, 0.0f));
-	gameObjects[1]->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
-	gameObjects[1]->setScale(glm::vec3(3.0f, 3.0f, 3.0f));*/
 
 	skyboxShader.loadShaders("Shaders/3D/skybox.vert", "Shaders/3D/skybox.frag", 6);
 	
@@ -96,9 +66,6 @@ Viewport3D::Viewport3D(wxPanel* parent, int* args, long style) :
 
 Viewport3D::~Viewport3D()
 {
-	//delete m_pEffect;
-	//delete picker;
-
 	for (int j = 0, i = this->gameObjects.size(); j < i; j++)
 	{
 		GameObject3D *gos = this->gameObjects.at(j); // not it
@@ -125,11 +92,11 @@ Viewport3D::~Viewport3D()
 void Viewport3D::InitOpenGl()
 {
 	if (InitGL) return;
-	//
+
 	while (!IsShown()) {};  // Force the Shown
 	wxGLCanvas::SetCurrent(*m_context);
 
-	/// Init OpenGL
+	// Init OpenGL
 	glLoadIdentity();
 	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
@@ -196,15 +163,9 @@ void Viewport3D::render(wxPaintEvent& evt)
 		GetGrandParent()->Close(true);
 	}
 
-	//deltaTime = MyApp::getDeltaTime();
-
 	camera.setCameraDeltaTime(0.008f);
 
-	//message(*m_output, "DeltaTime: " + std::to_string(deltaTime));
-
 	m_input.update();
-
-
 
 	view = camera.getWorldToViewMatrix();
 
@@ -215,16 +176,12 @@ void Viewport3D::render(wxPaintEvent& evt)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// ------------- draw some 3D ----------------
-	//prepare3DViewport(getWidth() / 2, 0, getWidth(), getHeight());
-
 	m_directionalLight.AmbientIntensity = m_ambientIntensity;
 	m_directionalLight.DiffuseIntensity = m_diffuseIntensity;
 
+	//draw some 3D
 	prepare3DViewport(0, 0, getWidth(), getHeight());
 	//glLoadIdentity();
-
-	//m_pEffect->worldMatrix(view, projection);
 
 	m_pEffect.use();
 
@@ -248,24 +205,27 @@ void Viewport3D::render(wxPaintEvent& evt)
 	
 	for (std::vector<GameObject3D*>::iterator iter = this->gameObjects.begin(); iter != this->gameObjects.end(); iter++)
 	{
-		float angle = 0;
+		//float angleX = 0.0f; //90 degrees = 1.575f
+		//float angleY = 0.0f;
+		//float angleZ = 0.0f;
 
 		glm::mat4 _model;
-		_model = glm::translate(_model, (*iter)->getPosition()); // Translate it down a bit so it's at the center of the scene
-		//_model = glm::rotate(_model, angle, (*iter)->setRotation(glm::vec3(0.0f, 1.0f, 0.0f)));
-		_model = glm::scale(_model, (*iter)->getScale());	// It's a bit too big for our scene, so scale it down
+
+		for (int i = 0; i < gameObjects.size(); i++)
+		{
+			gameObjects[i]->go = *gameObjects3D[i];
+		}
+
+		_model = glm::translate(_model, (*iter)->go.getPosition()); // Translate it down a bit so it's at the center of the scene
+		_model = glm::rotate(_model, glm::radians((*iter)->go.getRotation().x * sin(1.575f)), glm::vec3(1.0f, 0.0f, 0.0f));
+		_model = glm::rotate(_model, glm::radians((*iter)->go.getRotation().y * sin(1.575f)), glm::vec3(0.0f, 1.0f, 0.0f));
+		_model = glm::rotate(_model, glm::radians((*iter)->go.getRotation().z * sin(1.575f)), glm::vec3(0.0f, 0.0f, 1.0f));
+		_model = glm::scale(_model, (*iter)->go.getScale());	// It's a bit too big for our scene, so scale it down
+
 		glUniformMatrix4fv(glGetUniformLocation(m_pEffect.getProgram(), "model"), 1, GL_FALSE, glm::value_ptr(_model));
 
 		(*iter)->getObjectModel().Draw(shader);
 	}
-
-	/*for (int i = 0; i < getMyGameObjects().size(); i++)
-	{
-		numberOfGos++;
-	}*/
-
-	//The plan is to use the numberOfGos to calculate,
-	//how many times the fileWriter have to repeat the same step!
 
 	glm::mat4 _model3;
 	_model3 = glm::translate(_model3, glm::vec3(0.0f, 0.0f, 0.0f)); // Translate it down a bit so it's at the center of the scene
@@ -320,56 +280,6 @@ void Viewport3D::render(wxPaintEvent& evt)
 			hasGameObjects = true;
 		}
 
-		// Initialize Bullet. This strictly follows http://bulletphysics.org/mediawiki-1.5.8/index.php/Hello_World, 
-		// even though we won't use most of this stuff.
-
-		// Build the broadphase
-		/*broadphase = new btDbvtBroadphase();
-
-		// Set up the collision configuration and dispatcher
-		collisionConfiguration = new btDefaultCollisionConfiguration();
-		dispatcher = new btCollisionDispatcher(collisionConfiguration);
-
-		// The actual physics solver
-		solver = new btSequentialImpulseConstraintSolver;
-
-		// The world.
-		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-		dynamicsWorld->setGravity(btVector3(0, -9.81f, 0));
-
-		std::vector<btRigidBody*> rigidbodies;
-
-		// In this example, all monkeys will use the same collision shape : 
-		// A box of 2m*2m*2m (1.0 is the half-extent !)
-		btCollisionShape* boxCollisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
-
-		if (gameObjects.size() > 0 && go_orientations.size() > 0 && go_positions.size() > 0)
-		{
-			for (int i = 0; i < gameObjects.size(); i++)
-			{
-
-				btDefaultMotionState* motionstate = new btDefaultMotionState(btTransform(
-					btQuaternion(go_orientations[i].x, go_orientations[i].y, go_orientations[i].z, go_orientations[i].w),
-					btVector3(go_positions[i].x, go_positions[i].y, go_positions[i].z)
-					));
-
-				btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
-					0,                  // mass, in kg. 0 -> Static object, will never move.
-					motionstate,
-					boxCollisionShape,  // collision shape of body
-					btVector3(0, 0, 0)    // local inertia
-					);
-				btRigidBody *rigidBody = new btRigidBody(rigidBodyCI);
-
-				rigidbodies.push_back(rigidBody);
-				dynamicsWorld->addRigidBody(rigidBody);
-
-				// Small hack : store the mesh's index "i" in Bullet's User Pointer.
-				// Will be used to know which object is picked. 
-				// A real program would probably pass a "MyGameObjectPointer" instead.
-				rigidBody->setUserPointer((void*)i);
-			}
-		}*/
 		// Cubemap (Skybox)
 		std::vector<const GLchar*> faces;
 
@@ -435,29 +345,21 @@ void Viewport3D::render(wxPaintEvent& evt)
 		faces.push_back("Assets/Skyboxes/SummerSky3/Front.png");
 		faces.push_back("Assets/Skyboxes/SummerSky3/Back.png");
 
-		/*faces.push_back("Assets/Skyboxes/CartoonSky/Left.bmp");
-		faces.push_back("Assets/Skyboxes/CartoonSky/Right.bmp");
-		faces.push_back("Assets/Skyboxes/CartoonSky/Top.bmp");
-		faces.push_back("Assets/Skyboxes/CartoonSky/Bottom.bmp");
-		faces.push_back("Assets/Skyboxes/CartoonSky/Front.bmp");
-		faces.push_back("Assets/Skyboxes/CartoonSky/Back.bmp");*/
 		skyboxTexture = loadCubemap(faces);
 
 		hasStarted = false;
 	}
 
-	if (gameObjects.size() > 0 && hasGameObjects)
+	/*if (gameObjects.size() > 0 && hasGameObjects)
 	{
-		for (std::vector<GameObject3D*>::iterator iter = this->gameObjects.begin(); iter != this->gameObjects.end(); ++iter)
+		for (std::vector<GameObject3D::gameObject*>::iterator iter = this->gameObjects3D.begin(); iter != this->gameObjects3D.end(); ++iter)
 		{
 			go_positions.push_back((*iter)->getPosition());
 			go_orientations.push_back(glm::quat((*iter)->getRotation()));
-
-			//message(*m_output, "Successfully loaded the " + (*iter)->getName() + " model!");
 		}
 
 		hasGameObjects = false;
-	}
+	}*/
 
 	// Draw skybox as last
 	glDepthFunc(GL_LEQUAL);  // Change depth function so depth test passes when values are equal to depth buffer's content
@@ -465,64 +367,13 @@ void Viewport3D::render(wxPaintEvent& evt)
 	view = glm::mat4(glm::mat3(camera.getWorldToViewMatrix()));	// Remove any translation component of the view matrix
 	glUniformMatrix4fv(glGetUniformLocation(skyboxShader.getProgram(), "view"), 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(glGetUniformLocation(skyboxShader.getProgram(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
 	// skybox cube
 	glBindVertexArray(skyboxVAO);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glBindVertexArray(0);
 	glDepthFunc(GL_LESS); // Set depth function back to default
-
-	/*btVector3 p0 = rigidbodies[0]->getCenterOfMassPosition();
-	glm::vec3 v0 = go_positions[0];
-
-	long now = SDL_GetTicks();
-	//deltatime is in seconds
-	if (now > last) {
-		deltaTime = ((float)(now - last)) / 1000;
-		last = now;
-	}
-
-	if (dynamicsWorld != nullptr)
-	{
-		dynamicsWorld->stepSimulation(deltaTime, 7);
-	}*/
-
-	//if (leftButtonClicked)
-	//{
-		/*glm::vec3 ray_origin;
-		glm::vec3 ray_direction;
-		picker->ScreenPosToWorldRay(mouseX, mouseY, getWidth(), getHeight(), view, projection, ray_origin, ray_direction);
-
-		//for (int i = 0; i < gameObjects.size(); i++)
-		for (int i = 0; i < gameObjects.size(); i++)
-		{
-			float intersection_distance; // Output of TestRayOBBIntersection()
-			glm::vec3 aabb_min(-1.0f, -1.0f, -1.0f);
-			glm::vec3 aabb_max(1.0f, 1.0f, 1.0f);
-
-			// The ModelMatrix transforms :
-			// - the mesh to its desired position and orientation
-			// - but also the AABB (defined with aabb_min and aabb_max) into an OBB
-			//glm::mat4 RotationMatrix = glm::toMat4(go_orientations[i]);
-			//glm::mat4 TranslationMatrix = translate(mat4(), go_positions[i]);
-			glm::mat4 RotationMatrix = glm::toMat4(go_orientations[i]);
-			glm::mat4 TranslationMatrix = translate(mat4(), go_positions[i]);
-			glm::mat4 ModelMatrix = TranslationMatrix * RotationMatrix;
-
-			if (picker->TestRayOBBIntersection(ray_origin, ray_direction, aabb_min, aabb_max, ModelMatrix, intersection_distance))
-			{
-				message(*m_output, "GameObject " + gameObjects[i]->getName() + " is selected!");
-				break;
-			}
-			else
-			{
-				message(*m_output, "Background");
-				break;
-			}
-		}*/
-
-		//leftButtonClicked = false;
-	//}
 
 	glFlush();
 	SwapBuffers();
@@ -542,7 +393,8 @@ void Viewport3D::OnTimer(wxTimerEvent &evnt)
 
 void Viewport3D::OnEraseBackground(wxEraseEvent &evnt)
 {
-	//Do nothing here to prevent flickering!
+	//Do nothing here!
+	//This is just to prevent flickering!
 }
 
 // some useful events to use
@@ -553,6 +405,24 @@ void Viewport3D::OnMouseMoved(wxMouseEvent& event)
 	mouseX = pt.x;
 	mouseY = pt.y;
 }
+
+/*void Viewport3D::mouse_click_callback(int b, int s, int mouse_x, int mouse_y)
+{
+	float x = (2.0f * mouse_x) / getWidth() - 1.0f;
+	float y = 1.0f - (2.0f * mouse_y) / getHeight();
+	float z = 1.0f;
+	vec3 ray_nds = vec3(x, y, z);
+
+	vec4 ray_clip = vec4(ray_nds.x, ray_nds.y, -1.0, 1.0);
+
+	vec4 ray_eye = inverse(projection) * ray_clip;
+
+	ray_eye = vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
+
+	vec3 ray_wor = vec3((inverse(view) * ray_eye).x, (inverse(view) * ray_eye).y, (inverse(view) * ray_eye).z);
+	// don't forget to normalize the vector at some point
+	ray_wor = glm::normalize(ray_wor);
+}*/
 
 void Viewport3D::OnMouseDown(wxMouseEvent& event)
 {
@@ -565,55 +435,21 @@ void Viewport3D::OnMouseDown(wxMouseEvent& event)
 		{
 			SetFocus();
 		}
-		//printf("Coordinates in object space: %f, %f, %f\n",
-			//objcoord.x, objcoord.y, objcoord.z);
-
-		//objcoord = glm::project(wincoord, view, projection, viewport);
 	}	
 
 	glm::vec4 viewport = glm::vec4(0, 0, getWidth(), getHeight());
 	glm::vec3 wincoord = glm::vec3(mouseX, getHeight() - mouseY - 1, depth);
 	glm::vec3 objcoord = glm::unProject(wincoord, view, projection, viewport);
 	
-	wxLogMessage("Coordinates in object space: %f, %f, %f", objcoord.x, objcoord.y, objcoord.z);
-	/*glm::vec3 ray_origin;
-	glm::vec3 ray_direction;
-	//picker->ScreenPosToWorldRay(mouseX, mouseY, getWidth(), getHeight(), view, projection, ray_origin, ray_direction);
+	//mouse_click_callback(0, 0, objcoord.x, objcoord.y);
 
-	//for (int i = 0; i < gameObjects.size(); i++)
-	for (int i = 0; i < gameObjects.size(); i++)
-	{
-		float intersection_distance; // Output of TestRayOBBIntersection()
-		glm::vec3 aabb_min(-1.0f, -1.0f, -1.0f);
-		glm::vec3 aabb_max(1.0f, 1.0f, 1.0f);
+	/*std::string posX = std::to_string(pos.x);
+	std::string posY = std::to_string(pos.y);
+	std::string posZ = std::to_string(pos.z);
 
-		// The ModelMatrix transforms :
-		// - the mesh to its desired position and orientation
-		// - but also the AABB (defined with aabb_min and aabb_max) into an OBB
-		//glm::mat4 RotationMatrix = glm::toMat4(go_orientations[i]);
-		//glm::mat4 TranslationMatrix = translate(mat4(), go_positions[i]);
-		glm::mat4 RotationMatrix = glm::toMat4(go_orientations[i]);
-		glm::mat4 TranslationMatrix = translate(mat4(), go_positions[i]);
-		glm::mat4 ModelMatrix = TranslationMatrix * RotationMatrix;
+	wxLogMessage("pos: %s, %s, %s.", posX, posY, posZ);*/
 
-		if (picker->TestRayOBBIntersection(ray_origin, ray_direction, aabb_min, aabb_max, ModelMatrix, intersection_distance))
-		{
-			//for (std::vector<GameObject3D*>::iterator iter = this->gameObjects.begin(); iter != this->gameObjects.end(); ++iter)
-			//{
-			//message(*m_output, "GameObject " + (*iter)->getName() + " is selected!");
-			message(*m_output, "GameObject " + gameObjects[i]->getName() + " is selected!");
-			//}
-			//std::ostringstream oss;
-			//oss << "mesh " << i;
-			//message = oss.str();
-			break;
-		}
-		else
-		{
-			message(*m_output, "Background");
-			break;
-		}
-	}*/
+	//wxLogMessage("Coordinates in object space: %f, %f, %f", objcoord.x, objcoord.y, objcoord.z);	
 }
 
 void Viewport3D::OnMouseWheelMoved(wxMouseEvent& event)
@@ -625,8 +461,6 @@ void Viewport3D::OnMouseReleased(wxMouseEvent& event)
 {
 	leftButtonClicked = false;
 	rightButtonClicked = false;
-
-	//message(*m_output, result);
 }
 
 void Viewport3D::OnRightClick(wxMouseEvent& event)
@@ -636,7 +470,6 @@ void Viewport3D::OnRightClick(wxMouseEvent& event)
 		SetFocus();
 	}
 
-	//message(*m_output, "Right button is down = " + std::to_string(event.RightDown()));
 	rightButtonClicked = true;
 }
 
@@ -657,22 +490,6 @@ void Viewport3D::OnMouseEvent(wxMouseEvent &ev)
 
 GLboolean Viewport3D::checkKeys()
 {
-	/*if (keys[WXK_ESCAPE])
-		return true;*/
-
-	/*if (keys[wxKeyCode('W')])
-		camera.moveForward();
-	else if (keys[wxKeyCode('S')])
-		camera.moveBackward();
-	else if (keys[wxKeyCode('A')])
-		camera.strafeLeft();
-	else if (keys[wxKeyCode('D')])
-		camera.strafeRight();
-	else if (keys[wxKeyCode('Q')])
-		camera.moveDown();
-	else if (keys[wxKeyCode('E')])
-		camera.moveUp();*/
-
 	if (keys[wxKeyCode('W')])
 		camera.moveForward();
 	if (keys[wxKeyCode('S')])

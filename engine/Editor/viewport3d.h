@@ -50,6 +50,7 @@ public:
 	void setOutput(wxStyledTextCtrl &output) { m_output = &output; }
 	bool hasOutput() { if (m_output != nullptr) { return true; }  return false; }
 	void message(wxStyledTextCtrl &output, wxString msg);
+	//void mouse_click_callback(int b, int s, int mouse_x, int mouse_y);
 
 	//Setters
 	void setRotateX(float speed) { rotation.x += speed; }
@@ -62,16 +63,24 @@ public:
 	void setDeltaTime(float value) { deltaTime = value; }
 	void resizeGameObjects(int value) { gameObjects.resize(value); }
 	void addGameObject(GameObject3D *go) { gameObjects.push_back(go); hasGameObjects = true; }
+	void resizeGameObjects3D(int value) { gameObjects3D.resize(value); }
+	void addGameObject3D(GameObject3D::gameObject *go3D) { gameObjects3D.push_back(go3D); }
+	void moveGameObject3D(glm::vec3 newPos) { for (int i = 0; i < gameObjects.size(); i++) { if (gameObjects[i]->isThisSelected()) { gameObjects3D[i]->setPosition(newPos); } } }
+	void rotateGameObject3D(glm::vec3 newRot) { for (int i = 0; i < gameObjects.size(); i++) { if (gameObjects[i]->isThisSelected()) { gameObjects3D[i]->setRotation(newRot); } } }
+	void scaleGameObject3D(glm::vec3 newScl) { for (int i = 0; i < gameObjects.size(); i++) { if (gameObjects[i]->isThisSelected()) { gameObjects3D[i]->setScale(newScl); } } }
+	void isEdited(bool result) { hasBeenEdited = result; }
 
 	//Getters
 	bool get3DModelSelected() { return model3DSelected; }
-	wxString getPositionX() { return std::to_string(position.x); }
+	/*wxString getPositionX() { return std::to_string(position.x); }
 	wxString getPositionY() { return std::to_string(position.y); }
-	wxString getPositionZ() { return std::to_string(position.z); }
-	glm::vec3 positions() { return position; }
+	wxString getPositionZ() { return std::to_string(position.z); }*/
+	//glm::vec3 getPosition() { return position; }
 	float getAmbientIntensity() { return m_ambientIntensity; }
 	float getDiffuseIntensity() { return m_diffuseIntensity; }
 	std::vector<GameObject3D*> getMyGameObjects() { return gameObjects; }
+	std::vector<GameObject3D::gameObject*> getMy3DGameObjects() { return gameObjects3D; }
+	bool edited() { return hasBeenEdited; }
 
 	// events
 	void OnIdle(wxIdleEvent &evnt);
@@ -87,15 +96,12 @@ public:
 	void OnMouseEvent(wxMouseEvent &ev);
 	void OnKeyDown(wxKeyEvent &event);
 	void OnKeyUp(wxKeyEvent &event);
-	
-	//static int numberOfGos;
+
 private:
 	void InitOpenGl();
 	
 	GLuint loadTexture(GLchar const * path);
 	GLuint loadCubemap(std::vector<const GLchar*> faces);
-
-
 
 	bool InitGL;
 	bool model3DSelected = false;
@@ -105,6 +111,7 @@ private:
 	bool isMouseMoving = false;
 	bool hasStarted = false;
 	bool hasGameObjects = false;
+	bool hasBeenEdited = false;
 	int mouseX;
 	int mouseY;
 	
@@ -142,6 +149,8 @@ private:
 	AudioEngine aEngine;
 
 	std::vector<GameObject3D*> gameObjects;
+	std::vector<GameObject3D::gameObject *> gameObjects3D;
+
 	std::vector<glm::vec3> go_positions;
 	std::vector<glm::quat> go_orientations;
 
@@ -160,8 +169,6 @@ private:
 	
 	InputManager m_input;
 	Camera3D camera;
-
-	//Picking *picker;
 
 	ShaderProgram skyboxShader;
 

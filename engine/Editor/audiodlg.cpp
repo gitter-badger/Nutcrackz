@@ -66,15 +66,13 @@ AudioPlayerDlg::~AudioPlayerDlg()
 void AudioPlayerDlg::OnClose(wxCloseEvent& event)
 {
 	isClosed = true;
-	//this->Close();
-	//Destroy();
 }
 
 void AudioPlayerDlg::Import(wxCommandEvent& evnt)
 {
 	wxFileDialog OpenDialog(this, _("Choose a song to play"), wxEmptyString, wxEmptyString, _("OGG files (*.ogg)|*.ogg"), wxFD_OPEN, wxDefaultPosition);
 
-	if (OpenDialog.ShowModal() == wxID_OK) // if the user click "Open" instead of "cancel"
+	if (OpenDialog.ShowModal() == wxID_OK) //if the user click "Open" instead of "cancel"
 	{
 		if (!musicPlayer.hasInitialized)
 		{
@@ -96,8 +94,6 @@ void AudioPlayerDlg::Import(wxCommandEvent& evnt)
 			musicPlayer.setFilePath(OpenDialog.GetPath());
 
 			musicPlayer.LoadMusic();
-
-			//wxLogMessage("File Path = %s", musicPlayer.getFilePath());
 
 			musicPlayer.songIsLoaded(true);
 
