@@ -1,0 +1,7 @@
+#Skybox Material
++X = Assets/Skyboxes/SummerSky3/Left.png
+-X = Assets/Skyboxes/SummerSky3/Right.png
++Y = Assets/Skyboxes/SummerSky3/Top.png
+-Y = Assets/Skyboxes/SummerSky3/Bottom.png
++Z = Assets/Skyboxes/SummerSky3/Front.png
+-Z = Assets/Skyboxes/SummerSky3/Back.png
