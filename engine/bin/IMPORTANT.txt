@@ -1,3 +1,9 @@
+Thanks to friederbluemle at stackoverflow for giving this awesome tip!
+
+Here is the link to the original issue:
+http://stackoverflow.com/questions/22745076/libpng-warning-iccp-known-incorrect-srgb-profile
+-------------------------------------------------------------------------------------------------
+
 If you encounter a warning / error when loading png images into the Skybow creator,
 then what you need to do is to go to this website:
 
