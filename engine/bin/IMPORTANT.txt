@@ -1,0 +1,20 @@
+If you encounter a warning / error when loading png images into the Skybow creator,
+then what you need to do is to go to this website:
+
+https://sourceforge.net/projects/pmt/files/pngcrush-executables/
+
+and download the latest .exe file!
+NOTE! it has to end with .exe and not .exe.asc!
+
+And after that you need to put into a folder and create a .bat file from a text editor (i used notepad)
+and in that .bat file you need to put this code in it:
+
+For /R %%i in (*.png) do PNGCRUSH.EXE -ow -rem allb -reduce %%i
+
+From start to finish of the line above, that is what you need to put into the .bat file in order to fix your .png files,
+so they no longer provide that stupid warning / error!
+
+Oh btw, you need to put your png files from the skybox folder you wish to use, into the same folde as the pngcrush.exe and your .bat file :)
+
+Cheers,
+David.
