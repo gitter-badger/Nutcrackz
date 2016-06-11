@@ -31,5 +31,10 @@ void main()
         DiffuseColor = vec4(0, 0, 0, 0);                                            
     }                                                                               
                                                                                     
-    FragColor = texture2D(texture_diffuse1, TexCoords.xy) * (AmbientColor + DiffuseColor);
+    //FragColor = texture2D(texture_diffuse1, TexCoords.xy) * (AmbientColor + DiffuseColor);
+	vec4 texColor = texture2D(texture_diffuse1, TexCoords) * (AmbientColor + DiffuseColor);
+	if (texColor.a < 0.1)
+		discard;
+		
+	FragColor = texColor;
 }
