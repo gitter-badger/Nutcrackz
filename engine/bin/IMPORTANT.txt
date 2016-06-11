@@ -4,7 +4,7 @@ Here is the link to the original issue:
 http://stackoverflow.com/questions/22745076/libpng-warning-iccp-known-incorrect-srgb-profile
 -------------------------------------------------------------------------------------------------
 
-If you encounter a warning / error when loading png images into the Skybow creator,
+If you encounter a warning / error when loading png images into the Skybox creator,
 then what you need to do is to go to this website:
 
 https://sourceforge.net/projects/pmt/files/pngcrush-executables/
